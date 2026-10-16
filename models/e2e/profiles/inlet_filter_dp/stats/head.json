@@ -1,0 +1,20 @@
+{
+  "classes": [
+    "dp_transmitter_fault",
+    "inlet_filter_fouling",
+    "normal"
+  ],
+  "meta": {
+    "n": 180,
+    "per_class": {
+      "dp_transmitter_fault": 60,
+      "inlet_filter_fouling": 60,
+      "normal": 60
+    },
+    "frames": [
+      "*"
+    ],
+    "frame_key": "profile",
+    "stats_view": false
+  }
+}

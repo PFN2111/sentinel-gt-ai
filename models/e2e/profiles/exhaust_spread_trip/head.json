@@ -1,0 +1,24 @@
+{
+  "classes": [
+    "hets_trip_hardware",
+    "normal",
+    "tc_sensor_fault"
+  ],
+  "meta": {
+    "n": 401,
+    "per_class": {
+      "hets_trip_hardware": 210,
+      "normal": 85,
+      "tc_sensor_fault": 106
+    },
+    "frames": [
+      "*",
+      "7EA",
+      "7FA",
+      "7HA",
+      "9HA"
+    ],
+    "frame_key": "profile",
+    "stats_view": true
+  }
+}

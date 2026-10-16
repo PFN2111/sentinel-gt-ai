@@ -1,0 +1,27 @@
+{
+  "classes": [
+    "cold_spot_hardware",
+    "combustion_instability",
+    "dynamics_probe_fault",
+    "fuel_control_oscillation",
+    "hets_trip_hardware",
+    "igv_lvdt_drift",
+    "normal",
+    "tc_sensor_fault"
+  ],
+  "meta": {
+    "n": 1200,
+    "per_class": {
+      "cold_spot_hardware": 150,
+      "combustion_instability": 150,
+      "dynamics_probe_fault": 150,
+      "fuel_control_oscillation": 150,
+      "hets_trip_hardware": 150,
+      "igv_lvdt_drift": 150,
+      "normal": 150,
+      "tc_sensor_fault": 150
+    },
+    "trained": "2026-10-13T07:20:56",
+    "data": "synthetic train split"
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "best": {
+    "val_acc": 0.925,
+    "epoch": 11
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 2.0659,
+      "val_acc": 0.37,
+      "minutes": 1.9
+    },
+    {
+      "epoch": 2,
+      "train_loss": 1.6581,
+      "val_acc": 0.65,
+      "minutes": 3.7
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.9087,
+      "val_acc": 0.815,
+      "minutes": 5.6
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.5821,
+      "val_acc": 0.85,
+      "minutes": 7.7
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.4706,
+      "val_acc": 0.855,
+      "minutes": 9.7
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.3864,
+      "val_acc": 0.88,
+      "minutes": 11.5
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.3385,
+      "val_acc": 0.895,
+      "minutes": 13.4
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.3251,
+      "val_acc": 0.91,
+      "minutes": 15.2
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.2992,
+      "val_acc": 0.92,
+      "minutes": 17.1
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.2755,
+      "val_acc": 0.92,
+      "minutes": 19.0
+    },
+    {
+      "epoch": 11,
+      "train_loss": 0.3011,
+      "val_acc": 0.925,
+      "minutes": 20.8
+    },
+    {
+      "epoch": 12,
+      "train_loss": 0.2806,
+      "val_acc": 0.925,
+      "minutes": 22.7
+    }
+  ],
+  "classes": [
+    "normal",
+    "cold_spot_hardware",
+    "tc_sensor_fault",
+    "combustion_instability",
+    "dynamics_probe_fault",
+    "hets_trip_hardware",
+    "igv_lvdt_drift",
+    "fuel_control_oscillation"
+  ],
+  "channels": [
+    "load",
+    "egt_resid",
+    "spread",
+    "cold_dev",
+    "cold_pair",
+    "hot_dev",
+    "ring_flat",
+    "dyn",
+    "dyn_flat",
+    "vib",
+    "fuel_resid",
+    "igv_resid",
+    "trip",
+    "other"
+  ],
+  "window": 512,
+  "base": "models\\tspulse\\clf"
+}

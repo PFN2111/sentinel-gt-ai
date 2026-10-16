@@ -1,0 +1,28 @@
+# Sentinel GT AI (e2e-ai) — Python 3.11, Windows 11. Use install.ps1 (it picks the right builds):
+#   powershell -ExecutionPolicy Bypass -File install.ps1
+# Manual install:
+#   python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+#   python -m pip install -r requirements.txt
+#   CPU:  python -m pip install llama-cpp-python==0.3.36 --only-binary llama-cpp-python --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+#   GPU:  python -m pip install nvidia-cuda-runtime-cu12==12.4.* nvidia-cublas-cu12==12.4.*
+#         python -m pip install llama-cpp-python==0.3.36 --only-binary llama-cpp-python --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu124
+# Core
+numpy>=1.26,<2.3
+pandas>=2.2
+# NiceGUI dashboard. Vue, Quasar and ECharts are served from the installed package. No CDN.
+# Optional desktop window: python -m pip install pywebview, then python sentinel_gt_ai.py --native
+nicegui>=3.8,<4
+altair>=5
+plotly>=5.22
+scikit-learn>=1.4
+pytest>=8
+
+# TS Pulse (learned path encoder, residual feed, anomaly corroboration). CPU torch is enough.
+torch>=2.2
+granite-tsfm>=0.3
+
+# Teach the app: PDF -> text, locally (pure Python)
+pypdf>=4,<7
+
+# Local LLM runtime (GGUF: Gemma 4 12B by default). Installed by install.ps1 from the CPU or CUDA
+# wheel index (see above), so it is not pinned here.

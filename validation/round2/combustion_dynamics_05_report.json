@@ -1,0 +1,459 @@
+{
+  "schema": "sentinel.report/1",
+  "app": {
+    "name": "Sentinel GT AI",
+    "version": "1.0.0"
+  },
+  "case_id": "SGT-20261012-153220-a28d",
+  "created": "2026-10-12T15:32:20",
+  "case": {
+    "unit": "GT3",
+    "frame": "7FA.04",
+    "notes": "GT3 (7FA.04) at baseload. Combustion Dynamics High analytic fired overnight. Operators reported a humming tone from the combustion compartment. No load changes or fuel transfers reported.",
+    "notes_interpreted": [
+      "unit = GT3",
+      "frame = 7FA.04",
+      "flag: operator_reports_noise"
+    ]
+  },
+  "analytic": {
+    "entered": "Combustion Dynamics High",
+    "normalised": "combustion dynamics high",
+    "resolved": "combustion_dynamics",
+    "title": "Combustion dynamics",
+    "known": true,
+    "reason": "matched dynamics keywords"
+  },
+  "input": {
+    "source_name": "comb_dyn_05.csv",
+    "sha256": "83b16e05215b15803a3317f1e1afb3c0162863daaf88dcd37a5cf2a25e395774",
+    "rows": 14400,
+    "columns": 16,
+    "start": "2026-03-03 00:00",
+    "end": "2026-03-12 23:59",
+    "interval_minutes": 1.0,
+    "quality": {
+      "rows": 14400,
+      "columns": 16,
+      "start": "2026-03-03 00:00",
+      "end": "2026-03-12 23:59",
+      "duration_hours": 239.98,
+      "interval_minutes": 1.0,
+      "has_timestamps": true,
+      "missing_fraction": {},
+      "poor_channels": [],
+      "flatlined_channels": [],
+      "issues": []
+    },
+    "roles": {
+      "load": [
+        "load_MW"
+      ],
+      "cdp": [
+        "CDP_bar"
+      ],
+      "cdt": [
+        "CDT_C"
+      ],
+      "egt_avg": [
+        "EGT_avg_C"
+      ],
+      "spread": [
+        "EGT_spread_C"
+      ],
+      "fuel": [
+        "fuel_flow_kg_s"
+      ],
+      "igv": [
+        "IGV_deg"
+      ],
+      "vibration": [
+        "vib_DE_mm_s",
+        "vib_NDE_mm_s"
+      ],
+      "lube_oil": [
+        "lube_oil_C"
+      ],
+      "dynamics": [
+        "comb_dyn_psi"
+      ],
+      "trip": [
+        "trip_active"
+      ]
+    }
+  },
+  "findings": {
+    "analytic": "combustion_dynamics",
+    "analyzer_version": "combustion_dynamics/1.0",
+    "detected": true,
+    "summary": "Dynamics event on comb_dyn_psi: peak 2.76 psi, mean 1.48 psi (baseline 0.35), 12.2 h from 2026-03-05 12:02; 197 min above alarm; coupled with spread/vibration; ended.",
+    "events": [
+      {
+        "start_i": 3602,
+        "end_i": 4336,
+        "peak_i": 3960,
+        "start": "2026-03-05 12:02",
+        "end": "2026-03-06 00:16",
+        "peak": "2026-03-05 18:00",
+        "duration_h": 12.2,
+        "active_at_end": false
+      }
+    ],
+    "signature": {
+      "baseline_psi": 0.354,
+      "detected": true,
+      "channel": "comb_dyn_psi",
+      "peak_psi": 2.76,
+      "mean_psi": 1.48,
+      "minutes_above_alert": 511,
+      "minutes_above_alarm": 197,
+      "minutes_above_high": 0,
+      "duration_h": 12.2,
+      "modulation_period_min": 3.0,
+      "r_spread": 0.59,
+      "r_vib": 0.91,
+      "coupled": true,
+      "spread_delta_C": 1.0,
+      "vib_delta_mm_s": 0.28,
+      "active_at_end": false,
+      "rising": false,
+      "load_step_pct": 1.4,
+      "probe_suspect": false
+    },
+    "evidence": [
+      {
+        "label": "Dynamics baseline",
+        "value": "0.35 psi (robust sigma 0.053) on comb_dyn_psi",
+        "source": "CD-R1",
+        "detail": ""
+      },
+      {
+        "label": "Event window",
+        "value": "2026-03-05 12:02 -> 2026-03-06 00:16 (12.2 h)",
+        "source": "CD-R2",
+        "detail": ""
+      },
+      {
+        "label": "Peak / mean amplitude",
+        "value": "2.76 / 1.48 psi (baseline 0.35)",
+        "source": "CD-R2",
+        "detail": "99th pct / mean of raw samples"
+      },
+      {
+        "label": "Time above limits",
+        "value": "alert 1.0 psi: 511 min; alarm 2.0 psi: 197 min; high 3.0 psi: 0 min",
+        "source": "CD-R3",
+        "detail": "raw historian samples above each limit"
+      },
+      {
+        "label": "Envelope modulation period",
+        "value": "~3 min",
+        "source": "CD-R4",
+        "detail": "amplitude beating, not the acoustic tone"
+      },
+      {
+        "label": "Coupling",
+        "value": "r(dyn, spread) = 0.59; r(dyn, vibration) = 0.91",
+        "source": "CD-R5",
+        "detail": "coupled if r >= 0.4"
+      },
+      {
+        "label": "Exhaust spread during event",
+        "value": "+1.0 C vs normal",
+        "source": "CD-R5",
+        "detail": ""
+      },
+      {
+        "label": "Vibration during event",
+        "value": "+0.28 mm/s (vib_DE_mm_s)",
+        "source": "CD-R5",
+        "detail": ""
+      },
+      {
+        "label": "Load movement in hour before onset",
+        "value": "1.4% of normal load",
+        "source": "CD-R6",
+        "detail": ""
+      },
+      {
+        "label": "Trend inside event",
+        "value": "decayed / ended",
+        "source": "CD-R2",
+        "detail": ""
+      },
+      {
+        "label": "comb_dyn_psi probe health",
+        "value": "plausible, varies with process",
+        "source": "CD-R7",
+        "detail": ""
+      }
+    ],
+    "hypotheses": [
+      {
+        "cause": "combustion_instability",
+        "title": "Combustion instability \u2014 insufficient dynamics margin at this operating point (fuel splits / DLN schedule)",
+        "score": 0.89,
+        "action": "combustion_tuning",
+        "secondary": [
+          "escalate"
+        ],
+        "rules": [
+          "CD-R2",
+          "CD-R3",
+          "CD-R5"
+        ],
+        "support": [
+          "dynamics track exhaust spread (r=0.59) and vibration (r=0.91) \u2014 real pressure oscillation in the flame",
+          "sustained for 12.2 h above the alert limit",
+          "operators report an audible tone / noise"
+        ],
+        "against": []
+      },
+      {
+        "cause": "instrumentation",
+        "title": "Dynamics probe / cable fault on comb_dyn_psi",
+        "score": 0.1,
+        "action": "sensor_fix_replace",
+        "secondary": [],
+        "rules": [
+          "CD-R5",
+          "CD-R7"
+        ],
+        "support": [],
+        "against": [
+          "amplitude is mirrored by exhaust spread / vibration \u2014 the combustion is really pulsing"
+        ]
+      }
+    ],
+    "missing_channels": [],
+    "explained_channels": [
+      "comb_dyn_psi",
+      "EGT_Z1_C",
+      "EGT_Z2_C",
+      "EGT_Z3_C",
+      "EGT_Z4_C",
+      "EGT_spread_C",
+      "EGT_avg_C",
+      "fuel_flow_kg_s",
+      "vib_DE_mm_s",
+      "vib_NDE_mm_s"
+    ],
+    "timeline": [
+      [
+        "2026-03-05 12:02",
+        "Dynamics rise above baseline and cross the alert limit"
+      ],
+      [
+        "2026-03-05 18:00",
+        "Highest 10-min median amplitude 1.83 psi (raw 99th pct 2.76 psi)"
+      ],
+      [
+        "2026-03-06 00:16",
+        "Dynamics return below alert"
+      ]
+    ],
+    "what_happened": "Starting 2026-03-05 12:02, combustion dynamics on comb_dyn_psi rose from a baseline of 0.35 psi to a mean of 1.48 psi with peaks of 2.76 psi, for 12.2 h. The envelope was above the 1.0 psi alert for 511 min, above the 2.0 psi alarm for 197 min and above 3.0 psi for 0 min. The amplitude beat with a ~3 min period. Exhaust spread rose +1.0 C and vib_DE_mm_s +0.28 mm/s during the event. It ended at 2026-03-06 00:16.",
+    "why": "Most likely cause: Combustion instability \u2014 insufficient dynamics margin at this operating point (fuel splits / DLN schedule) (rule support 0.89). dynamics track exhaust spread (r=0.59) and vibration (r=0.91) \u2014 real pressure oscillation in the flame; sustained for 12.2 h above the alert limit; operators report an audible tone / noise. Alternative considered: Dynamics probe / cable fault on comb_dyn_psi (0.10) \u2014 amplitude is mirrored by exhaust spread / vibration \u2014 the combustion is really pulsing.",
+    "severity": "high",
+    "urgency": "prompt",
+    "escalate": true,
+    "operating_guidance": [
+      "Dynamics exceeded the 2.0 psi alarm level for 197 min: if it recurs, reduce load / change mode per site procedure and notify the combustion SME.",
+      "Avoid fast load ramps and fuel transfers in this load band until tuned."
+    ],
+    "site_checks": [
+      "Pull the high-speed dynamics monitor spectrum for the event: identify the tone (Hz) and which cans lead.",
+      "Review fuel splits, fuel gas temperature and composition (Wobbe) at onset against the tuning baseline.",
+      "Confirm the dynamics probe is healthy (compare redundant probes / cans) before tuning."
+    ],
+    "review_flags": [],
+    "data_gaps": [
+      "Historian amplitude only: the acoustic tone frequency (Hz) needs the high-speed dynamics monitor spectrum."
+    ],
+    "chart": {
+      "channels": [
+        "comb_dyn_psi",
+        "EGT_spread_C",
+        "vib_DE_mm_s"
+      ],
+      "event": [
+        3602,
+        4336
+      ]
+    },
+    "strength": 0.89
+  },
+  "anomaly": {
+    "zscore": {
+      "engine": "robust_zscore",
+      "threshold_z": 6.0,
+      "channels": [
+        {
+          "channel": "comb_dyn_psi",
+          "max_z": 23.6,
+          "minutes": 730,
+          "first": "2026-03-05 12:04",
+          "last": "2026-03-06 00:13",
+          "windows": [
+            [
+              3604,
+              4333
+            ]
+          ]
+        }
+      ]
+    },
+    "tspulse": {
+      "engine": "TS Pulse (ibm-granite/granite-timeseries-tspulse-r1, zero-shot masked reconstruction)",
+      "model_path": "local-models/models\\tspulse\\ibm-granite--granite-timeseries-tspulse-r1\\tspulse-block-ad",
+      "channels": [
+        {
+          "channel": "comb_dyn_psi",
+          "max_z": 8.7,
+          "windows": [
+            [
+              3593,
+              4424
+            ]
+          ],
+          "first": "2026-03-05 11:53",
+          "last": "2026-03-06 01:44"
+        }
+      ],
+      "scored_channels": [
+        "EGT_spread_C",
+        "comb_dyn_psi",
+        "EGT_avg_C",
+        "load_MW",
+        "fuel_flow_kg_s",
+        "IGV_deg",
+        "vib_DE_mm_s",
+        "vib_NDE_mm_s",
+        "CDP_bar",
+        "CDT_C"
+      ]
+    },
+    "tspulse_status": "ok"
+  },
+  "cross_check": {},
+  "decision": {
+    "analytic": "combustion_dynamics",
+    "cause": "combustion_instability",
+    "cause_title": "Combustion instability (dynamics / tuning margin)",
+    "hypothesis": "Combustion instability \u2014 insufficient dynamics margin at this operating point (fuel splits / DLN schedule)",
+    "primary_action": "combustion_tuning",
+    "secondary_actions": [],
+    "urgency": "prompt",
+    "severity": "high",
+    "escalate": true,
+    "needs_human": false,
+    "review_flags": [],
+    "confidence": 0.92,
+    "confidence_label": "High",
+    "confidence_factors": [
+      [
+        "rule support for 'combustion_instability' hypothesis = 0.89",
+        0.79
+      ],
+      [
+        "clear margin over the alternative (0.79)",
+        0.05
+      ],
+      [
+        "TS Pulse independently flags the event window",
+        0.05
+      ],
+      [
+        "robust z-score scan flags the event window",
+        0.03
+      ]
+    ],
+    "rules_fired": [
+      "CD-R2",
+      "CD-R3",
+      "CD-R5",
+      "AN-TSP",
+      "AN-Z"
+    ],
+    "alternatives": [
+      {
+        "cause": "instrumentation",
+        "title": "Dynamics probe / cable fault on comb_dyn_psi",
+        "action": "sensor_fix_replace",
+        "score": 0.1,
+        "why_not": "amplitude is mirrored by exhaust spread / vibration \u2014 the combustion is really pulsing"
+      }
+    ],
+    "rule_action": "combustion_tuning",
+    "feedback_effects": [],
+    "action_label": "Combustion tuning (fuel splits / DLN schedule)"
+  },
+  "similar_cases": [],
+  "knowledge": [
+    {
+      "ref": "process_map_combustion_dynamics.md \u00a7 Typical plant signatures",
+      "text": "- Elevated, often oscillating `comb_dyn_psi` over minutes to hours\n- EGT zone flutter \u2192 intermittent `EGT_spread_C` growth\n- Mild-to-moderate `vib_DE` / `vib_NDE` rise tracking dynamics peaks\n- Fuel flow / IGV interaction during load changes\n- Operator reports of audible tone or cabin vibration"
+    },
+    {
+      "ref": "process_map_combustion_dynamics.md \u00a7 Decision flow",
+      "text": "1. **Validate the dynamics signal**\n   - Probe saturation, cable noise, or single-channel failure?\n   - Compare redundant dynamics sensors if installed\n2. **Characterize the event**\n   - Amplitude vs site limit; continuous vs bursting\n   - Dominant period / tone (if spectrum available)\n   - Load, IGV, fuel staging at onset\n3. **Combustion / control response**\n   - Staging, pilot ratio, fuel temperature, Wobbe swings\n   - Avoid aggressive load slews while dynamics high\n4. **Hardware risk**\n   - Prolonged high dynamics \u2192 liner / transition / basket risk\n   - If dynamics + HETS or cold-spot pattern \u2192 escalate jointly\n5. **Action branches**\n   - **Below limit, stable** \u2192 monitor, log, trend\n   - **Above limit or rising** \u2192 load reduction per procedure; notify combustion SME\n   - **Trip or hardware suspicion** \u2192 hold restart pending inspection criteria"
+    }
+  ],
+  "review": {
+    "status": "DRAFT",
+    "feedback": null,
+    "history": []
+  },
+  "narrative": {
+    "engine": "granite",
+    "what_happened": "On 2026-03-05 at 12:02, combustion dynamics (comb_dyn_psi) exceeded the alert limit of 1.0 psi, peaking at 2.76 psi with a mean of 1.48 psi. The event lasted 12.2 hours, with 197 minutes above the 2.0 psi alarm threshold. The dynamics were coupled with increased exhaust spread (+1.0\u00b0C) and vibration (+0.28 mm/s). The load changed by only 1.4% of normal load before the onset. The dynamics probe health was deemed plausible. The event decayed and ended by 2026-03-06 00:16.",
+    "why": "The combustion dynamics exceeded the alarm limit due to insufficient dynamics margin at the current operating point, likely caused by fuel splits or DLN schedule misalignment. The strong correlation (r = 0.91) between dynamics and vibration, along with the rise in exhaust spread, confirms real pressure oscillations in the flame. The alternative hypothesis of a dynamics probe fault was rejected because the amplitude was mirrored by exhaust spread and vibration, indicating genuine combustion pulsing rather than sensor issues.",
+    "action_rationale": "Prompt combustion tuning (adjusting fuel splits and DLN schedule) is required to restore dynamics margin and prevent potential liner or basket damage. The urgency is high due to the prolonged duration above the alarm level and the high confidence (0.92) in the diagnosis.",
+    "site_instructions": [
+      "Pull the high-speed dynamics monitor spectrum for the event to identify the tone frequency and affected cans.",
+      "Review fuel splits, fuel gas temperature, and composition (Wobbe index) at the onset against the tuning baseline.",
+      "Confirm the dynamics probe health by comparing redundant probes or cans.",
+      "If dynamics exceed the 2.0 psi alarm level again, reduce load or change mode per site procedure and notify the combustion SME.",
+      "Avoid fast load ramps and fuel transfers in this load band until the combustion is tuned."
+    ],
+    "concerns": "",
+    "checks": {
+      "json": "valid (schema-constrained)",
+      "action named in rationale": "yes",
+      "numbers traced to evidence": "12/12"
+    },
+    "timings": {
+      "prompt_tokens": 1358,
+      "prompt_s": 58.5,
+      "gen_tokens": 434,
+      "gen_s": 87.5,
+      "load_s": 58.5
+    }
+  },
+  "bottom_line": "Dynamics event on comb_dyn_psi: peak 2.76 psi, mean 1.48 psi (baseline 0.35), 12.2 h from 2026-03-05 12:02; 197 min above alarm; coupled with spread/vibration; ended. Recommended: Combustion tuning \u2014 prompt. Escalate to engineering. Confidence 0.92 (High).",
+  "audit": {
+    "thresholds": {
+      "alert_psi": 1.0,
+      "alarm_psi": 2.0,
+      "high_psi": 3.0,
+      "min_event_minutes": 30,
+      "envelope_minutes": 10,
+      "coupling_r": 0.4,
+      "hardware_risk_hours": 6.0
+    },
+    "narrative_engine": "Granite 4.1 8B GGUF `granite-4.1-8b-Q4_K_M.gguf` via `llama-completion.exe` (llama.cpp b9947), temp 0, seed 42, JSON-schema constrained, 1358 prompt tokens, 434 generated, 152 s on CPU (8 threads). Narrative only \u2014 action and evidence come from the rules engine.",
+    "settings": {
+      "gguf_path": "local-models/models\\granite-4.1-8b-Q4_K_M.gguf",
+      "gguf_found": true,
+      "llama_binary": "local-models/models\\llama-cpp-bin\\llama-completion.exe",
+      "tspulse_dir": "local-models/models\\tspulse",
+      "data_dir": ".scratch\\valdata2",
+      "use_llm": true,
+      "use_tspulse": true,
+      "llm_threads": 8,
+      "llm_ctx": 4096,
+      "llm_max_tokens": 700
+    },
+    "elapsed_s": 174.5
+  }
+}

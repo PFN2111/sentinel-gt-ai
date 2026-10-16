@@ -1,0 +1,20 @@
+{
+  "embedder": "tspulse_ci",
+  "chosen": "finetuned",
+  "device": "cpu",
+  "candidates": {
+    "frozen": {
+      "signature_acc": 0.9596142857142859,
+      "available": true,
+      "source": "clf"
+    },
+    "finetuned": {
+      "signature_acc": 0.9738571428571428,
+      "available": true,
+      "source": "models/e2e/legacy/encoder"
+    }
+  },
+  "head_views": [
+    "tspulse_ci+stats"
+  ]
+}

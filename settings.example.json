@@ -1,0 +1,15 @@
+{
+  "_comment": "Copy to settings.local.json (git-ignored) to override. Relative paths are relative to the app folder. Nothing is downloaded at runtime.",
+  "device": "auto",
+  "n_gpu_layers": "auto",
+  "gguf_path": "models/gemma-4-12b-it-Q4_K_M.gguf",
+  "tspulse_dir": "models/tspulse/ad",
+  "tspulse_clf_dir": "models/tspulse/clf",
+  "e2e_model_dir": "models/e2e",
+  "e2e_retrain_every": 5,
+  "use_llm": true,
+  "use_tspulse": true,
+  "e2e_mode": "legacy",
+  "embedder": "tspulse_ci",
+  "profiles_dir": "data/e2e/profiles"
+}

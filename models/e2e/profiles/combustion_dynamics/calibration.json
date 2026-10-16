@@ -1,0 +1,14 @@
+{
+  "prior": {
+    "n": 2870,
+    "radius": 0.4516,
+    "match": 0.3613
+  },
+  "profile": {
+    "n": 606,
+    "radius": 0.3835,
+    "match": 0.2772,
+    "confidence": 0.5792,
+    "confidence_n": 606
+  }
+}

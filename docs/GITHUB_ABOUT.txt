@@ -1,0 +1,22 @@
+# GitHub repository About text
+
+Paste these into the repository About panel. Do not put them in the README.
+
+## Description
+
+Local assistant for gas-turbine alerts. Per-alert tag profiles, any number of alert types, a frame dropdown, a teach page, and retrain that promotes only when held-out accuracy is not worse. CPU fallback. Fully local.
+
+## Website
+
+(leave empty)
+
+## Topics
+
+gas-turbine
+time-series
+anomaly-detection
+nicegui
+local-llm
+machine-learning
+python
+windows

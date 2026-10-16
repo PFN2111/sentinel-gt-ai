@@ -1,0 +1,36 @@
+# Local-only: no telemetry, bind to localhost. Theme has no remote fonts or assets.
+
+[browser]
+gatherUsageStats = false
+
+[server]
+address = "localhost"
+headless = true
+maxUploadSize = 200
+
+[global]
+developmentMode = false
+
+[theme]
+font = "sans serif"
+primaryColor = "#2f6fed"
+baseRadius = "12px"
+showWidgetBorder = true
+chartCategoricalColors = ["#2f6fed", "#14b8a6", "#f59e0b", "#ef4444", "#8b5cf6", "#0ea5e9", "#22c55e", "#f97316"]
+chartSequentialColors = ["#f4f7fb", "#dbe7fb", "#c5d8f8", "#93c5fd", "#60a5fa", "#3b82f6", "#2f6fed", "#1d4ed8", "#1e3a8a", "#0d366b"]
+
+[theme.light]
+primaryColor = "#1d4ed8"
+backgroundColor = "#f4f7fb"
+secondaryBackgroundColor = "#ffffff"
+textColor = "#142033"
+borderColor = "#d5deea"
+font = "sans serif"
+
+[theme.dark]
+primaryColor = "#3d8bfd"
+backgroundColor = "#0f1419"
+secondaryBackgroundColor = "#1a2332"
+textColor = "#e7ecf3"
+borderColor = "#2c3a4f"
+font = "sans serif"

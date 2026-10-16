@@ -1,0 +1,20 @@
+{
+  "classes": [
+    "drain_tc_fault",
+    "lube_cooler_fouling",
+    "normal"
+  ],
+  "meta": {
+    "n": 180,
+    "per_class": {
+      "drain_tc_fault": 60,
+      "lube_cooler_fouling": 60,
+      "normal": 60
+    },
+    "frames": [
+      "*"
+    ],
+    "frame_key": "profile",
+    "stats_view": true
+  }
+}

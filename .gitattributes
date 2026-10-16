@@ -1,0 +1,2 @@
+# The acceptance side-car sha256 is of these UTF-8 LF bytes. Keep the checkout identical.
+eval/acceptance_peralert.jsonl text eol=lf

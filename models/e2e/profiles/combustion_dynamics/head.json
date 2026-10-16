@@ -1,0 +1,24 @@
+{
+  "classes": [
+    "combustion_instability",
+    "dynamics_probe_fault",
+    "normal"
+  ],
+  "meta": {
+    "n": 518,
+    "per_class": {
+      "combustion_instability": 210,
+      "dynamics_probe_fault": 210,
+      "normal": 98
+    },
+    "frames": [
+      "*",
+      "7EA",
+      "7FA",
+      "7HA",
+      "9HA"
+    ],
+    "frame_key": "profile",
+    "stats_view": true
+  }
+}

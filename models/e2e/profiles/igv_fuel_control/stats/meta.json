@@ -1,0 +1,60 @@
+{
+  "profile": "igv_fuel_control",
+  "profile_rev": 1,
+  "channels_hash": "0e4e5013ae35",
+  "embedder": "stats",
+  "tier": "head",
+  "classes": [
+    "fuel_control_oscillation",
+    "igv_lvdt_drift",
+    "normal"
+  ],
+  "frames": [
+    "*",
+    "7EA",
+    "7FA",
+    "7HA",
+    "9HA"
+  ],
+  "n_train": 528,
+  "n_val": 86,
+  "n_heldout": 85,
+  "gate": {
+    "status": "pass",
+    "reasons": [
+      "statistical fallback bundle"
+    ]
+  },
+  "sources": {
+    "original": "dataset",
+    "profile": "dataset_profiles",
+    "original_manifest_sha256": "7ed0fc825d2e7cf3f45f892d9f021a7b047918ad1220e652fb51f2a010524e2c",
+    "profile_manifest_sha256": "bcd6bbf45ec846e7afb551be3ade95e5b2aa1399acb5935f418973d48c32a52c",
+    "roles": {
+      "train": 528,
+      "val": 86,
+      "heldout": 85
+    },
+    "signatures": {
+      "train": {
+        "normal": 108,
+        "igv_lvdt_drift": 210,
+        "fuel_control_oscillation": 210
+      },
+      "val": {
+        "normal": 16,
+        "igv_lvdt_drift": 35,
+        "fuel_control_oscillation": 35
+      },
+      "heldout": {
+        "igv_lvdt_drift": 44,
+        "normal": 21,
+        "fuel_control_oscillation": 20
+      }
+    },
+    "by_source": {
+      "synthetic_original": 429,
+      "synthetic_profile": 270
+    }
+  }
+}

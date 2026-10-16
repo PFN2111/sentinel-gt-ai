@@ -1,0 +1,24 @@
+{
+  "classes": [
+    "fuel_control_oscillation",
+    "igv_lvdt_drift",
+    "normal"
+  ],
+  "meta": {
+    "n": 528,
+    "per_class": {
+      "fuel_control_oscillation": 210,
+      "igv_lvdt_drift": 210,
+      "normal": 108
+    },
+    "frames": [
+      "*",
+      "7EA",
+      "7FA",
+      "7HA",
+      "9HA"
+    ],
+    "frame_key": "profile",
+    "stats_view": true
+  }
+}

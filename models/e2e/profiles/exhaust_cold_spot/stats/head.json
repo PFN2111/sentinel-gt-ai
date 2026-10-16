@@ -1,0 +1,24 @@
+{
+  "classes": [
+    "cold_spot_hardware",
+    "normal",
+    "tc_sensor_fault"
+  ],
+  "meta": {
+    "n": 473,
+    "per_class": {
+      "cold_spot_hardware": 210,
+      "normal": 99,
+      "tc_sensor_fault": 164
+    },
+    "frames": [
+      "*",
+      "7EA",
+      "7FA",
+      "7HA",
+      "9HA"
+    ],
+    "frame_key": "profile",
+    "stats_view": false
+  }
+}

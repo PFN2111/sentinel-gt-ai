@@ -1,0 +1,630 @@
+{
+  "schema": "sentinel.report/1",
+  "app": {
+    "name": "Sentinel GT AI",
+    "version": "1.0.0"
+  },
+  "case_id": "SGT-20261012-153510-f827",
+  "created": "2026-10-12T15:35:10",
+  "case": {
+    "unit": "GT1",
+    "frame": "7FA.03",
+    "notes": "GT1 (7FA.03) tripped. First-out: high exhaust temperature spread (HETS). Operations restarted the unit after a walk-down found nothing obvious. No TC maintenance in the last 6 months.",
+    "notes_interpreted": [
+      "unit = GT1",
+      "frame = 7FA.03",
+      "first-out = high exhaust temperature spread",
+      "flag: restarted"
+    ]
+  },
+  "analytic": {
+    "entered": "HETS Trip",
+    "normalised": "hets trip",
+    "resolved": "hets_trip",
+    "title": "HETS trip (high exhaust temperature spread)",
+    "known": true,
+    "reason": "exact analytic id"
+  },
+  "input": {
+    "source_name": "hets_trip_01.csv",
+    "sha256": "b2dfc44556ac2a375fd8a218b483a4b08ee24b4bc54c0035806b32108647727f",
+    "rows": 8640,
+    "columns": 16,
+    "start": "2025-08-01 00:00",
+    "end": "2025-09-29 23:50",
+    "interval_minutes": 10.0,
+    "quality": {
+      "rows": 8640,
+      "columns": 16,
+      "start": "2025-08-01 00:00",
+      "end": "2025-09-29 23:50",
+      "duration_hours": 1439.83,
+      "interval_minutes": 10.0,
+      "has_timestamps": true,
+      "missing_fraction": {},
+      "poor_channels": [],
+      "flatlined_channels": [],
+      "issues": []
+    },
+    "roles": {
+      "load": [
+        "load_MW"
+      ],
+      "cdp": [
+        "CDP_bar"
+      ],
+      "cdt": [
+        "CDT_C"
+      ],
+      "egt_avg": [
+        "EGT_avg_C"
+      ],
+      "spread": [
+        "EGT_spread_C"
+      ],
+      "fuel": [
+        "fuel_flow_kg_s"
+      ],
+      "igv": [
+        "IGV_deg"
+      ],
+      "vibration": [
+        "vib_DE_mm_s",
+        "vib_NDE_mm_s"
+      ],
+      "lube_oil": [
+        "lube_oil_C"
+      ],
+      "dynamics": [
+        "comb_dyn_psi"
+      ],
+      "trip": [
+        "trip_active"
+      ]
+    }
+  },
+  "findings": {
+    "analytic": "hets_trip",
+    "analyzer_version": "hets_trip/1.0",
+    "detected": true,
+    "summary": "Trip at 2025-09-04 04:40 after spread built from 2.4 to 59.5 C over 2.3 h (gradual), opposing hot/cold zones; restarted 2025-09-04 21:10, post-restart spread 0.8 C.",
+    "events": [
+      {
+        "start_i": 4910,
+        "end_i": 4927,
+        "peak_i": 4924,
+        "start": "2025-09-04 02:20",
+        "end": "2025-09-04 05:10",
+        "peak": "2025-09-04 04:40",
+        "trip_i": 4924,
+        "trip": "2025-09-04 04:40",
+        "duration_h": 2.8,
+        "active_at_end": false
+      }
+    ],
+    "signature": {
+      "detected": true,
+      "trip_count": 1,
+      "trip_time": "2025-09-04 04:40",
+      "trip_source": "trip flag 'trip_active'",
+      "baseline_spread_C": 2.4,
+      "peak_spread_C": 59.5,
+      "rise_C": 57.1,
+      "rise_minutes": 140,
+      "rise_rate_C_per_h": 24.5,
+      "step_rise": false,
+      "hot_zones": [
+        "EGT_Z1_C"
+      ],
+      "cold_zones": [
+        "EGT_Z3_C"
+      ],
+      "opposing_hot_cold": true,
+      "single_zone": false,
+      "load_move_pct": 1.6,
+      "restarted": true,
+      "post_restart_spread_C": 0.8,
+      "repeat_after_restart": false
+    },
+    "evidence": [
+      {
+        "label": "Trip",
+        "value": "2025-09-04 04:40 (trip flag 'trip_active'); 1 trip(s) in file",
+        "source": "HT-R1",
+        "detail": ""
+      },
+      {
+        "label": "First-out (notes)",
+        "value": "high exhaust temperature spread",
+        "source": "HT-R1",
+        "detail": "confirms exhaust spread protection"
+      },
+      {
+        "label": "Spread build-up (to trip)",
+        "value": "2.4 C -> 59.5 C over 2.3 h (24.5 C/h)",
+        "source": "HT-R2",
+        "detail": ""
+      },
+      {
+        "label": "Rise character",
+        "value": "gradual build-up",
+        "source": "HT-R2",
+        "detail": "step if <= 20 min"
+      },
+      {
+        "label": "Zone deviations at peak",
+        "value": "EGT_Z1_C +31.9, EGT_Z2_C +1.2, EGT_Z3_C -27.6, EGT_Z4_C -1.2 C",
+        "source": "HT-R3",
+        "detail": "vs median of zones, baseline offsets removed"
+      },
+      {
+        "label": "Pattern",
+        "value": "opposing hot and cold zones (true circumferential imbalance)",
+        "source": "HT-R3",
+        "detail": ""
+      },
+      {
+        "label": "Load movement before/during rise",
+        "value": "1.6% of normal",
+        "source": "HT-R4",
+        "detail": ""
+      },
+      {
+        "label": "Vibration",
+        "value": "baseline 3.06, pre-trip max 3.19, at trip 6.88 mm/s (vib_DE_mm_s)",
+        "source": "HT-R5",
+        "detail": ""
+      },
+      {
+        "label": "Dynamics",
+        "value": "baseline 0.35, pre-trip max 0.47, at trip 1.82 psi (comb_dyn_psi)",
+        "source": "HT-R5",
+        "detail": ""
+      },
+      {
+        "label": "Restart",
+        "value": "back to >=80% load at 2025-09-04 21:10 (16.0 h after trip)",
+        "source": "HT-R6",
+        "detail": ""
+      },
+      {
+        "label": "Spread after restart",
+        "value": "0.8 C (first 6 h at load)",
+        "source": "HT-R6",
+        "detail": ""
+      }
+    ],
+    "hypotheses": [
+      {
+        "cause": "combustion_hardware",
+        "title": "Combustion hardware / fuel nozzle fault causing circumferential imbalance (hot and cold sectors)",
+        "score": 0.85,
+        "action": "borescope",
+        "secondary": [
+          "escalate"
+        ],
+        "rules": [
+          "HT-R2",
+          "HT-R3",
+          "HT-R6"
+        ],
+        "support": [
+          "hot (EGT_Z1_C) and cold (EGT_Z3_C) zones diverge together \u2014 real circumferential combustion imbalance",
+          "spread built up over 2.3 h at 24.5 C/h before protection acted"
+        ],
+        "against": []
+      },
+      {
+        "cause": "instrumentation",
+        "title": "Exhaust thermocouple / harness fault fooling the spread protection",
+        "score": 0.1,
+        "action": "sensor_fix_replace",
+        "secondary": [],
+        "rules": [
+          "HT-R2",
+          "HT-R3"
+        ],
+        "support": [],
+        "against": [
+          "hot and cold zones moved in opposite directions \u2014 a single bad TC cannot do that",
+          "gradual multi-hour build-up"
+        ]
+      },
+      {
+        "cause": "process_transient",
+        "title": "Operational transient (load swing / fuel transfer) driving the spread",
+        "score": 0.1,
+        "action": "control_adjustment",
+        "secondary": [
+          "combustion_tuning"
+        ],
+        "rules": [
+          "HT-R4"
+        ],
+        "support": [],
+        "against": [
+          "no load or IGV movement before the rise"
+        ]
+      }
+    ],
+    "missing_channels": [],
+    "explained_channels": [
+      "load_MW",
+      "CDP_bar",
+      "CDT_C",
+      "EGT_avg_C",
+      "EGT_spread_C",
+      "EGT_Z1_C",
+      "EGT_Z2_C",
+      "EGT_Z3_C",
+      "EGT_Z4_C",
+      "fuel_flow_kg_s",
+      "IGV_deg",
+      "vib_DE_mm_s",
+      "vib_NDE_mm_s",
+      "lube_oil_C",
+      "comb_dyn_psi",
+      "trip_active"
+    ],
+    "timeline": [
+      [
+        "2025-08-27 22:40",
+        "Normal spread ~2.4 C"
+      ],
+      [
+        "2025-09-04 02:20",
+        "Spread starts to build"
+      ],
+      [
+        "2025-09-04 04:40",
+        "Peak spread 59.5 C (at the trip); hot EGT_Z1_C / cold EGT_Z3_C"
+      ],
+      [
+        "2025-09-04 04:40",
+        "Trip (trip flag 'trip_active'); load and fuel collapse"
+      ],
+      [
+        "2025-09-04 21:10",
+        "Back at load; spread 0.8 C"
+      ]
+    ],
+    "what_happened": "The unit tripped at 2025-09-04 04:40 (trip flag 'trip_active'). Over the preceding 2.3 h the exhaust spread rose from a normal 2.4 C to 59.5 C (24.5 C/h) while load stayed steady; at the peak EGT_Z1_C ran hot and EGT_Z3_C ran cold. Load, fuel and IGV collapsed at the trip, with vibration 6.9 mm/s and dynamics 1.82 psi as a consequence of the trip transient. The unit was back at load at 2025-09-04 21:10 with spread 0.8 C.",
+    "why": "Most likely cause: Combustion hardware / fuel nozzle fault causing circumferential imbalance (hot and cold sectors) (rule support 0.85). hot (EGT_Z1_C) and cold (EGT_Z3_C) zones diverge together \u2014 real circumferential combustion imbalance; spread built up over 2.3 h at 24.5 C/h before protection acted. Alternative considered: Exhaust thermocouple / harness fault fooling the spread protection (0.10) \u2014 hot and cold zones moved in opposite directions \u2014 a single bad TC cannot do that; gradual multi-hour build-up.",
+    "severity": "high",
+    "urgency": "prompt",
+    "escalate": true,
+    "operating_guidance": [
+      "Unit was restarted at 2025-09-04 21:10; spread after restart 0.8 C. Keep a tight spread watch and schedule the borescope at the earliest opportunity.",
+      "The restart was made before any inspection: the combustion SME should confirm that continued operation is acceptable until the borescope, and set a spread limit at which the unit is removed from service."
+    ],
+    "site_checks": [
+      "Confirm the first-out and SOE: HETS / exhaust spread protection, not flameout, overspeed or vibration.",
+      "Prove the exhaust TCs in the hot and cold zones (loop check) so the imbalance is not instrumentation.",
+      "Map the hot/cold zones through the swirl chart to the combustor cans; borescope those cans (fuel nozzles, liners, transition pieces, crossfire tubes).",
+      "Review fuel nozzle / manifold pressures and gas valve positions for the pre-trip hours."
+    ],
+    "review_flags": [],
+    "data_gaps": [],
+    "chart": {
+      "channels": [
+        "EGT_spread_C",
+        "EGT_Z1_C",
+        "EGT_Z3_C",
+        "load_MW"
+      ],
+      "event": [
+        4910,
+        4927
+      ],
+      "focus": [
+        4838,
+        5107
+      ]
+    },
+    "strength": 0.85
+  },
+  "anomaly": {
+    "zscore": {
+      "engine": "robust_zscore",
+      "threshold_z": 6.0,
+      "channels": [
+        {
+          "channel": "EGT_spread_C",
+          "max_z": 45.4,
+          "minutes": 150,
+          "first": "2025-09-04 02:10",
+          "last": "2025-09-04 04:30",
+          "windows": [
+            [
+              4909,
+              4923
+            ]
+          ]
+        },
+        {
+          "channel": "load_MW",
+          "max_z": 19.1,
+          "minutes": 850,
+          "first": "2025-09-04 08:50",
+          "last": "2025-09-04 22:50",
+          "windows": [
+            [
+              4949,
+              5033
+            ]
+          ]
+        },
+        {
+          "channel": "EGT_Z1_C",
+          "max_z": 17.9,
+          "minutes": 110,
+          "first": "2025-09-04 02:50",
+          "last": "2025-09-04 04:30",
+          "windows": [
+            [
+              4913,
+              4923
+            ]
+          ]
+        },
+        {
+          "channel": "EGT_Z3_C",
+          "max_z": 14.8,
+          "minutes": 110,
+          "first": "2025-09-04 02:50",
+          "last": "2025-09-04 04:30",
+          "windows": [
+            [
+              4913,
+              4923
+            ]
+          ]
+        }
+      ]
+    },
+    "tspulse": {
+      "engine": "TS Pulse (ibm-granite/granite-timeseries-tspulse-r1, zero-shot masked reconstruction)",
+      "model_path": "local-models/models\\tspulse\\ibm-granite--granite-timeseries-tspulse-r1\\tspulse-block-ad",
+      "channels": [
+        {
+          "channel": "load_MW",
+          "max_z": 15.7,
+          "windows": [
+            [
+              4879,
+              4883
+            ],
+            [
+              4916,
+              4929
+            ],
+            [
+              4936,
+              4993
+            ],
+            [
+              5025,
+              5031
+            ],
+            [
+              5050,
+              5058
+            ],
+            [
+              5176,
+              5178
+            ],
+            [
+              5244,
+              5250
+            ],
+            [
+              5272,
+              5274
+            ]
+          ],
+          "first": "2025-09-03 21:10",
+          "last": "2025-09-06 15:00"
+        },
+        {
+          "channel": "IGV_deg",
+          "max_z": 14.4,
+          "windows": [
+            [
+              4913,
+              4936
+            ],
+            [
+              5020,
+              5023
+            ],
+            [
+              5067,
+              5071
+            ],
+            [
+              5310,
+              5314
+            ]
+          ],
+          "first": "2025-09-04 02:50",
+          "last": "2025-09-06 21:40"
+        },
+        {
+          "channel": "fuel_flow_kg_s",
+          "max_z": 13.9,
+          "windows": [
+            [
+              4912,
+              4936
+            ],
+            [
+              5067,
+              5071
+            ]
+          ],
+          "first": "2025-09-04 02:40",
+          "last": "2025-09-05 05:10"
+        },
+        {
+          "channel": "EGT_spread_C",
+          "max_z": 10.6,
+          "windows": [
+            [
+              4907,
+              4936
+            ]
+          ],
+          "first": "2025-09-04 01:50",
+          "last": "2025-09-04 06:40"
+        }
+      ],
+      "scored_channels": [
+        "EGT_spread_C",
+        "comb_dyn_psi",
+        "EGT_avg_C",
+        "load_MW",
+        "fuel_flow_kg_s",
+        "IGV_deg",
+        "vib_DE_mm_s",
+        "vib_NDE_mm_s",
+        "CDP_bar",
+        "CDT_C"
+      ]
+    },
+    "tspulse_status": "ok"
+  },
+  "cross_check": {
+    "cold_spot": "Cold sector EGT_Z3_C (1 TC, single), EGT_Z3_C 21.0 C below normal, gradual onset at 2025-09-04 01:50, 2.7 h, cleared; spread 2.4 -> 50.3 C."
+  },
+  "decision": {
+    "analytic": "hets_trip",
+    "cause": "combustion_hardware",
+    "cause_title": "Combustion hardware / fuel nozzle issue",
+    "hypothesis": "Combustion hardware / fuel nozzle fault causing circumferential imbalance (hot and cold sectors)",
+    "primary_action": "borescope",
+    "secondary_actions": [],
+    "urgency": "prompt",
+    "severity": "high",
+    "escalate": true,
+    "needs_human": false,
+    "review_flags": [],
+    "confidence": 0.9,
+    "confidence_label": "High",
+    "confidence_factors": [
+      [
+        "rule support for 'combustion_hardware' hypothesis = 0.85",
+        0.77
+      ],
+      [
+        "clear margin over the alternative (0.75)",
+        0.05
+      ],
+      [
+        "TS Pulse independently flags the event window",
+        0.05
+      ],
+      [
+        "robust z-score scan flags the event window",
+        0.03
+      ]
+    ],
+    "rules_fired": [
+      "HT-R2",
+      "HT-R3",
+      "HT-R6",
+      "AN-TSP",
+      "AN-Z"
+    ],
+    "alternatives": [
+      {
+        "cause": "instrumentation",
+        "title": "Exhaust thermocouple / harness fault fooling the spread protection",
+        "action": "sensor_fix_replace",
+        "score": 0.1,
+        "why_not": "hot and cold zones moved in opposite directions \u2014 a single bad TC cannot do that; gradual multi-hour build-up"
+      },
+      {
+        "cause": "process_transient",
+        "title": "Operational transient (load swing / fuel transfer) driving the spread",
+        "action": "control_adjustment",
+        "score": 0.1,
+        "why_not": "no load or IGV movement before the rise"
+      }
+    ],
+    "rule_action": "borescope",
+    "feedback_effects": [],
+    "action_label": "Borescope inspection (combustion / hot gas path hardware)"
+  },
+  "similar_cases": [],
+  "knowledge": [
+    {
+      "ref": "process_map_hets_trip.md \u00a7 Typical plant signatures",
+      "text": "- Rapid rise of `EGT_spread_C` toward protection limit\n- One or more zones hot, opposing zones relatively cold (true circumferential imbalance)\n- `trip_active` / first-out HETS (or equivalent) in SOE\n- Load and fuel collapse at trip; IGV may run closed\n- Possible concurrent vibration or dynamics spike"
+    },
+    {
+      "ref": "process_map_hets_trip.md \u00a7 Decision flow",
+      "text": "1. **Confirm first-out and data quality**\n   - Is first-out truly HETS / exhaust spread \u2014 not flameout, overspeed, or vibration?\n   - Any single TC step-change that would fool spread logic?\n2. **Timeline reconstruction**\n   - Load, fuel, IGV, CDP/CDT for 2\u20136 hours pre-trip\n   - Zone EGT pattern at peak spread\n   - Concurrent alarms (fuel, flame, dynamics, oil)\n3. **Root-cause branches**\n   - **Instrumentation** \u2014 bad TC, harness, transmitter; verify offline\n   - **Fuel / nozzle** \u2014 clogged or failed nozzle, manifold imbalance, staging fault\n   - **Combustion hardware** \u2014 liner, transition, burner damage (outage scope)\n   - **Process** \u2014 fuel transfer, load reject, IGV runaway coupled to spread\n4. **Restart criteria**\n   - Do not restart if metal-temp / fire / fuel-leak indicators present\n   - After sensor proof: monitored restart with tighter spread watch\n   - After hardware suspicion: engineering hold until inspection plan agreed\n5. **Capture for learning**\n   - Save case in GT Diagnostic Harness with trip narrative and corrections"
+    },
+    {
+      "ref": "process_map_exhaust_spread.md \u00a7 Decision flow",
+      "text": "1. **Confirm data quality**\n   - Any TC reading flatline, open circuit, or stuck?\n   - Recent TC replacement or harness work?\n2. **Characterize the spread**\n   - Peak-to-peak vs historical baseload band\n   - Which circumferential sectors are hot/cold?\n   - Correlation with load, fuel transfer, ambient?\n3. **Cross-check combustion**\n   - Fuel stroke / valve positions\n   - Dynamics (pulsation) sensors if installed\n   - Flame scanners\n4. **Cross-check performance**\n   - Power vs expected\n   - CDP/CDT\n   - Emissions (NOx/CO) if available\n5. **Action branches**\n   - **Sensor-only pattern** \u2192 schedule TC verification, continue monitored operation if protection allows\n   - **True combustion imbalance** \u2192 follow site combustion trouble procedure; consider load reduction\n   - **Hardware risk indicators** (metal temperature, oil, vibration concurrent) \u2192 escalate, prepare outage scope"
+    }
+  ],
+  "review": {
+    "status": "DRAFT",
+    "feedback": null,
+    "history": []
+  },
+  "narrative": {
+    "engine": "granite",
+    "what_happened": "GT1 (7FA.03) tripped on 2025-09-04 at 04:40 due to a high exhaust temperature spread (HETS) of 59.5 \u00b0C, which built gradually from 2.4 \u00b0C over 2.3 hours. The trip was flagged as 'trip_active' with load and fuel collapsing. The unit was restarted at 2025-09-04 21:10, 16 hours after the trip, with the spread returning to 0.8 \u00b0C.",
+    "why": "The cause is a combustion hardware/fuel nozzle issue creating a circumferential imbalance between hot (EGT_Z1_C) and cold (EGT_Z3_C) zones. The spread's gradual build-up over 2.3 hours at 24.5 \u00b0C/h before protection activation supports this. Alternatives such as an exhaust thermocouple/harness fault or an operational transient were rejected because a single bad TC cannot produce opposing hot and cold zones, and no load or IGV movement preceded the rise.",
+    "action_rationale": "A borescope inspection of combustion hardware/hot gas path components is required promptly (within days or at the next shutdown) due to the high severity and potential for further imbalance. This urgency is driven by the confirmed circumferential combustion imbalance and the need to prevent recurrence.",
+    "site_instructions": [
+      "Confirm the first-out and SOE is indeed HETS/exhaust spread protection, not flameout, overspeed, or vibration.",
+      "Perform a loop check of the exhaust thermocouples in the hot and cold zones to rule out instrumentation issues.",
+      "Map the hot/cold zones through the swirl chart to the combustor cans and conduct a borescope inspection of those cans, focusing on fuel nozzles, liners, transition pieces, and crossfire tubes.",
+      "Review fuel nozzle/manifold pressures and gas valve positions for the pre-trip hours to assess any anomalies.",
+      "Schedule the borescope inspection at the earliest opportunity and ensure the combustion SME confirms continued operation is acceptable until the inspection."
+    ],
+    "concerns": "",
+    "checks": {
+      "json": "valid (schema-constrained)",
+      "action named in rationale": "yes",
+      "numbers traced to evidence": "11/11"
+    },
+    "timings": {
+      "prompt_tokens": 1685,
+      "prompt_s": 69.8,
+      "gen_tokens": 452,
+      "gen_s": 96.6,
+      "load_s": 69.8
+    }
+  },
+  "bottom_line": "Trip at 2025-09-04 04:40 after spread built from 2.4 to 59.5 C over 2.3 h (gradual), opposing hot/cold zones; restarted 2025-09-04 21:10, post-restart spread 0.8 C. Recommended: Borescope inspection \u2014 prompt. Escalate to engineering. Confidence 0.90 (High).",
+  "audit": {
+    "thresholds": {
+      "load_collapse_fraction": 0.5,
+      "pretrip_hours": 6.0,
+      "spread_rise_C": 15.0,
+      "step_rise_minutes": 20,
+      "zone_dev_C": 8.0,
+      "restart_spread_margin_C": 10.0
+    },
+    "narrative_engine": "Granite 4.1 8B GGUF `granite-4.1-8b-Q4_K_M.gguf` via `llama-completion.exe` (llama.cpp b9947), temp 0, seed 42, JSON-schema constrained, 1685 prompt tokens, 452 generated, 172 s on CPU (8 threads). Narrative only \u2014 action and evidence come from the rules engine.",
+    "settings": {
+      "gguf_path": "local-models/models\\granite-4.1-8b-Q4_K_M.gguf",
+      "gguf_found": true,
+      "llama_binary": "local-models/models\\llama-cpp-bin\\llama-completion.exe",
+      "tspulse_dir": "local-models/models\\tspulse",
+      "data_dir": ".scratch\\valdata2",
+      "use_llm": true,
+      "use_tspulse": true,
+      "llm_threads": 8,
+      "llm_ctx": 4096,
+      "llm_max_tokens": 700
+    },
+    "elapsed_s": 188.5
+  }
+}

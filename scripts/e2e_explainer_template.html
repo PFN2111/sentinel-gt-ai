@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sentinel GT AI — End-to-end AI explained</title>
+<style>
+:root {
+  color-scheme: light;
+  --page: #f9f9f7; --surface-1: #fcfcfb; --surface-2: #f3f2ee;
+  --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
+  --grid: #e1e0d9; --axis: #c3c2b7; --border: rgba(11,11,11,0.10);
+  --series-1: #2a78d6; --series-2: #eb6834; --series-3: #1baf7a;
+  --seq-0: #f3f2ee; --seq-1: #cde2fb; --seq-2: #86b6ef; --seq-3: #3987e5; --seq-4: #1c5cab; --seq-5: #0d366b;
+  --div-neg: #2a78d6; --div-pos: #e34948; --div-mid: #f0efec;
+  --accent: #2a78d6; --accent-wash: rgba(42,120,214,0.08);
+  --good: #0ca30c; --good-text: #006300; --warning: #fab219; --critical: #d03b3b;
+  --code-bg: #f0efec;
+  --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 16px rgba(11,11,11,0.04);
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface-1: #1a1a19; --surface-2: #222220;
+  --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781;
+  --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,0.10);
+  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70;
+  --seq-0: #222220; --seq-1: #104281; --seq-2: #1c5cab; --seq-3: #2a78d6; --seq-4: #5598e7; --seq-5: #9ec5f4;
+  --div-neg: #3987e5; --div-pos: #e66767; --div-mid: #383835;
+  --accent: #3987e5; --accent-wash: rgba(57,135,229,0.14);
+  --good-text: #0ca30c; --code-bg: #262624; --shadow: none;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 15px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; }
+a { color: var(--accent); }
+code, pre { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 0.88em; }
+code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+pre { background: var(--code-bg); padding: 12px 14px; border-radius: 8px; overflow-x: auto; margin: 0 0 0.8em; }
+pre code { background: none; padding: 0; }
+h1, h2, h3, h4 { line-height: 1.25; margin: 0 0 0.5em; }
+h2 { font-size: 1.55rem; font-weight: 650; }
+h3 { font-size: 1.12rem; font-weight: 620; margin-top: 1.3em; }
+p { margin: 0 0 0.8em; }
+.layout { display: grid; grid-template-columns: 250px minmax(0, 1fr); min-height: 100vh; }
+aside { position: sticky; top: 0; height: 100vh; overflow-y: auto; background: var(--surface-1); border-right: 1px solid var(--border); padding: 22px 16px; display: flex; flex-direction: column; gap: 18px; }
+.brand { display: flex; gap: 10px; align-items: center; }
+.brand-mark { width: 34px; height: 34px; border-radius: 9px; background: var(--accent); display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 0.8rem; }
+.brand-name { font-weight: 680; }
+.brand-sub { color: var(--muted); font-size: 0.8rem; }
+nav ol { list-style: none; margin: 0; padding: 0; }
+nav a { display: block; padding: 7px 10px; border-radius: 7px; color: var(--ink-2); text-decoration: none; font-size: 0.93rem; }
+nav a:hover { background: var(--surface-2); color: var(--ink); }
+nav a.active { background: var(--accent-wash); color: var(--ink); font-weight: 600; box-shadow: inset 3px 0 0 var(--accent); }
+.side-tools { margin-top: auto; display: flex; flex-direction: column; gap: 8px; }
+button { font: inherit; }
+.btn { border: 1px solid var(--border); background: var(--surface-1); color: var(--ink); padding: 7px 12px; border-radius: 8px; cursor: pointer; font-size: 0.88rem; }
+.btn:hover { background: var(--surface-2); }
+.btn:focus-visible, nav a:focus-visible, [role="tab"]:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+main { padding: 34px 44px 80px; max-width: 1180px; width: 100%; }
+section { padding-top: 22px; margin-bottom: 34px; scroll-margin-top: 8px; }
+.eyebrow { color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; margin-bottom: 4px; }
+.lead { font-size: 1.08rem; color: var(--ink-2); max-width: 860px; }
+h1 { font-size: 2.1rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 8px; }
+.card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; box-shadow: var(--shadow); margin-bottom: 14px; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.tiles { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin: 20px 0 8px; }
+.tile { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; box-shadow: var(--shadow); }
+.tile .label { color: var(--ink-2); font-size: 0.82rem; }
+.tile .value { font-size: 1.75rem; font-weight: 650; margin-top: 2px; }
+.tile .sub { color: var(--muted); font-size: 0.8rem; }
+.who { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.who h3 { margin-top: 0; }
+details.stage { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; box-shadow: var(--shadow); }
+details.stage > summary { cursor: pointer; padding: 14px 18px; list-style: none; display: flex; gap: 12px; align-items: baseline; }
+details.stage > summary::-webkit-details-marker { display: none; }
+details.stage > summary::before { content: "▸"; color: var(--muted); transition: transform 0.15s; }
+details.stage[open] > summary::before { transform: rotate(90deg); }
+.stage-num { color: var(--accent); font-weight: 700; min-width: 22px; }
+.stage-title { font-weight: 620; }
+.stage-sub { color: var(--muted); font-size: 0.88rem; margin-left: auto; }
+details.stage .body { padding: 0 20px 16px 52px; color: var(--ink-2); }
+details.stage .body ul { margin: 0 0 0.6em; padding-left: 18px; }
+.flow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 14px 0 18px; }
+.flow .box { background: var(--surface-1); border: 1px solid var(--border); border-radius: 9px; padding: 8px 12px; font-size: 0.88rem; box-shadow: var(--shadow); }
+.flow .box.hl { border-color: var(--accent); background: var(--accent-wash); }
+.flow .arr { color: var(--muted); }
+[role="tablist"] { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 12px; border-bottom: 1px solid var(--border); }
+[role="tab"] { border: 0; background: none; padding: 8px 12px; color: var(--ink-2); cursor: pointer; border-bottom: 2px solid transparent; font-size: 0.9rem; }
+[role="tab"][aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); font-weight: 600; }
+[role="tabpanel"][hidden] { display: none; }
+.report-frame { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 18px 22px; max-height: 720px; overflow: auto; font-size: 0.9rem; }
+.report-frame table, table.data { border-collapse: collapse; width: 100%; font-size: 0.84rem; margin: 6px 0 12px; }
+.report-frame th, .report-frame td, table.data th, table.data td { border-bottom: 1px solid var(--grid); padding: 5px 8px; text-align: left; vertical-align: top; }
+table.data td.num, table.data th.num { text-align: right; font-variant-numeric: tabular-nums; }
+table.data td:last-child { white-space: nowrap; }
+.report-frame blockquote { margin: 0 0 10px; padding: 8px 12px; border-left: 3px solid var(--warning); background: var(--surface-2); border-radius: 0 8px 8px 0; }
+.chart { position: relative; width: 100%; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.chart-title { font-weight: 620; margin: 0 0 2px; }
+.chart-sub { color: var(--muted); font-size: 0.85rem; margin: 0 0 8px; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.84rem; color: var(--ink-2); margin: 4px 0 6px; }
+.legend .key { display: inline-block; width: 14px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+.legend .key.rect { width: 10px; height: 10px; border-radius: 2px; }
+.tip { position: absolute; pointer-events: none; background: var(--surface-1); border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px; font-size: 0.82rem; box-shadow: 0 4px 16px rgba(0,0,0,0.12); white-space: nowrap; z-index: 5; }
+.tip .v { font-weight: 650; color: var(--ink); }
+.tip .n { color: var(--ink-2); }
+.tip .row { display: flex; gap: 8px; align-items: center; }
+.tip .k { width: 12px; height: 2px; border-radius: 1px; }
+.table-toggle { margin-top: 6px; font-size: 0.82rem; border: 0; background: none; color: var(--accent); cursor: pointer; padding: 0; }
+.table-view { margin-top: 6px; max-height: 300px; overflow: auto; }
+.note { color: var(--muted); font-size: 0.85rem; }
+.callout { border-left: 3px solid var(--accent); background: var(--accent-wash); padding: 10px 14px; border-radius: 0 10px 10px 0; margin: 10px 0 14px; color: var(--ink-2); }
+.callout.warn { border-left-color: var(--warning); background: rgba(250,178,25,0.10); }
+.pill { display: inline-block; font-size: 0.75rem; padding: 1px 8px; border-radius: 99px; background: var(--surface-2); color: var(--ink-2); border: 1px solid var(--border); }
+.steps { counter-reset: s; list-style: none; padding: 0; margin: 0; }
+.steps li { counter-increment: s; position: relative; padding: 8px 0 8px 40px; border-bottom: 1px solid var(--grid); }
+.steps li::before { content: counter(s); position: absolute; left: 0; top: 8px; width: 26px; height: 26px; border-radius: 50%; background: var(--accent-wash); color: var(--accent); font-weight: 700; display: grid; place-items: center; font-size: 0.85rem; }
+select.inline { font: inherit; padding: 4px 8px; border-radius: 7px; border: 1px solid var(--border); background: var(--surface-1); color: var(--ink); }
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } aside { position: static; height: auto; } .tiles, .grid-2, .grid-3, .who { grid-template-columns: 1fr; } main { padding: 20px; } }
+@media print { aside { display: none; } .layout { display: block; } }
+</style>
+</head>
+<body>
+<div class="layout">
+<aside>
+  <div class="brand"><div class="brand-mark">E2E</div><div><div class="brand-name">Sentinel GT AI</div><div class="brand-sub">End-to-end AI · e2e-ai branch</div></div></div>
+  <nav><ol>
+    <li><a href="#what">What it does</a></li>
+    <li><a href="#pipeline">Pipeline</a></li>
+    <li><a href="#loop">Drop-in &amp; label</a></li>
+    <li><a href="#dashboard">Learning dashboard</a></li>
+    <li><a href="#reports">Example reports</a></li>
+    <li><a href="#eval">Evaluation</a></li>
+    <li><a href="#run">How to run</a></li>
+    <li><a href="#limits">Limitations &amp; next steps</a></li>
+  </ol></nav>
+  <div class="side-tools">
+    <button class="btn" id="theme" type="button">Toggle dark mode</button>
+    <button class="btn" id="expand" type="button">Expand all stages</button>
+    <div class="note">Generated %%GENERATED%% · commit %%COMMIT%% · single offline file, no external resources.</div>
+  </div>
+</aside>
+<main>
+
+<section id="what">
+  <div class="eyebrow">Sentinel GT AI · End-to-end AI</div>
+  <h1>From raw historian CSV to corrective action — learned, explainable, and improving as you label</h1>
+  <p class="lead">The end-to-end version adds a <strong>learned path</strong> next to the rule-based Sentinel: a time-series foundation model
+  (IBM TS Pulse, fine-tuned) reads the raw CSV, a similarity index finds the most similar engineer-labeled cases, a novelty check refuses to guess on
+  patterns it has never seen, and a local LLM (Gemma 4 12B) writes the Tier 2 site report. The proven rules run alongside in <strong>shadow mode</strong>;
+  when the two disagree, the case goes to a human. Everything runs on the engineer's laptop — no cloud, no data leaves the machine.</p>
+  <p class="note">V2 (residuals, Teach the app, retrain, the single file): <a href="sentinel_v2_explainer.html">docs/sentinel_v2_explainer.html</a>.</p>
+  <div class="tiles" id="tiles"></div>
+  <div class="who">
+    <div class="card"><h3>For the Tier 2 engineer</h3>
+      <ul>
+        <li>Drop one CSV or a whole folder. Each case is analyzed in about a second: learned signature and action, rule verdict, agreement, the
+          most similar labeled cases with distances, and a novelty flag.</li>
+        <li>Confirm with one click, or pick the right signature/action from a dropdown — or type a new signature name to create a new class.</li>
+        <li>Your label is used immediately (the next similar case cites it) and the classifier retrains in the background every 5 labels.</li>
+        <li>Ask Gemma for the full site report when you need it — same report format as before, with an audit trail.</li>
+      </ul></div>
+    <div class="card"><h3>For the manager</h3>
+      <ul>
+        <li>The learned path covers signatures the rules never had analyzers for, and it learns site-specific variants from the engineers' own labels.</li>
+        <li>Shadow mode keeps the rules as a safety net: agreement is measured, disagreements are routed to a person, never auto-released.</li>
+        <li>A learning dashboard shows the model improving as labels come in — accuracy vs rules over time, agreement, novelty and acceptance rates.</li>
+        <li>Runs on the Dell 14 Pro Max (6 GB GPU, partial offload) or CPU-only, installed by one script. Evaluated on synthetic data only so far — see limits.</li>
+      </ul></div>
+  </div>
+</section>
+
+<section id="pipeline">
+  <div class="eyebrow">How it works</div>
+  <h2>Pipeline</h2>
+  <div class="flow">
+    <span class="box">CSV + analytic + notes</span><span class="arr">→</span>
+    <span class="box hl">Canonical channels</span><span class="arr">→</span>
+    <span class="box hl">TS Pulse (fine-tuned)</span><span class="arr">→</span>
+    <span class="box hl">Head + similar cases + novelty</span><span class="arr">→</span>
+    <span class="box hl">Gemma 4 12B report writer</span><span class="arr">→</span>
+    <span class="box">Site report + review</span>
+  </div>
+  <div class="flow"><span class="box">same CSV</span><span class="arr">→</span><span class="box">Rule path (unchanged baseline)</span><span class="arr">→</span><span class="box">shadow verdict + guardrails → agreement / needs_human</span></div>
+
+  <details class="stage" open><summary><span class="stage-num">1</span><span class="stage-title">Canonical channels — any CSV, one fixed view</span><span class="stage-sub">sentinel/e2e/features.py</span></summary>
+    <div class="body">
+      <p>Historian exports differ: 16–36 exhaust TCs or 4 zone EGTs, OEM-style tags (<code>TTXD_n</code>, <code>DWATT</code>, <code>CDM_AMP</code>) or plain names,
+      1-, 5- or 10-minute data, two days or two months. The learned path maps every file to the same 14 channels × 512 points:</p>
+      <ul>
+        <li><strong>Rotation-invariant exhaust statistics</strong> — coldest and hottest sensor vs the ring median, the coldest <em>pair of adjacent</em> sensors (this is what separates a single bad TC from a cold sector), and a frozen-sensor indicator. A cold sector at TC5 or TC23, on a 16- or 36-TC ring, looks the same.</li>
+        <li><strong>Load-independent residuals</strong> for EGT, fuel flow and IGV position (so dispatch changes are not mistaken for faults), dynamics amplitude and probe noise health, vibration, the trip flag, and "everything else" (largest load-independent deviation of CDP, CDT, lube oil, ambient, unknown tags).</li>
+        <li><strong>Robust z-score against the record's own baseline</strong>, then signed-log compression: magnitude survives (a 30 °C cold sector is not a 3 °C wobble) while different frames line up.</li>
+        <li><strong>Two views</strong>: the whole record (extreme-value pooling, so a 20-minute trip in 60 days still shows) and a 48-hour zoom around the onset of the strongest excursion, at a fixed physical time scale.</li>
+      </ul>
+      <p>No diagnosis rules are involved — only channel-role mapping and generic statistics.</p>
+      <div class="card" style="margin-top:10px">
+        <div class="chart-title">What TS Pulse sees <select class="inline" id="seesel" aria-label="Choose a case"></select></div>
+        <div class="chart-sub">The 14 × 512 model input for a real sample case (blue = below baseline, red = above; gray = normal). Left half: whole record. Right half: 48 h zoom.</div>
+        <div class="chart" id="sees"></div>
+      </div>
+    </div></details>
+
+  <details class="stage"><summary><span class="stage-num">2</span><span class="stage-title">TS Pulse, fine-tuned on labeled GT cases</span><span class="stage-sub">sentinel/e2e/encoder.py · scripts/train_e2e.py</span></summary>
+    <div class="body">
+      <p>IBM <strong>TS Pulse r1</strong> is a ~1 M-parameter time-series foundation model that runs without a GPU. We start from its classification variant
+      (<code>tspulse-block-dualhead-512-p16-r1</code>, from the local models folder) and fine-tune all of it — backbone, mix-channel decoder and classification head — on
+      the synthetic training split: <span id="ft-info"></span>.</p>
+      <p>The model's <strong>semantic register tokens</strong> (its summary of the window) become a 672-number embedding per case. The same embedding feeds the
+      classifier head and the similarity index, so "what it predicts" and "what it looks like" are judged in the same space.</p>
+      <div class="chart" id="ftchart"></div>
+    </div></details>
+
+  <details class="stage"><summary><span class="stage-num">3</span><span class="stage-title">Similarity index and one-shot learning</span><span class="stage-sub">sentinel/e2e/model.py</span></summary>
+    <div class="body">
+      <p>Every labeled case — synthetic training cases and every case an engineer labels — is stored with its embedding. Each new case retrieves its top-5
+      neighbours and the report cites them: <em>"similar to case X → action Y, distance d"</em>.</p>
+      <p><strong>One-shot:</strong> if the nearest labeled case is within the calibrated match distance (<span id="match-thr"></span>) and disagrees with the classifier,
+      the neighbour wins. A single label for a new variant or a new signature therefore works <em>immediately</em>, before any retraining — and is flagged so the engineer confirms it applies.</p>
+    </div></details>
+
+  <details class="stage"><summary><span class="stage-num">4</span><span class="stage-title">Novelty detection — don't force a class</span><span class="stage-sub">calibrated threshold</span></summary>
+    <div class="body">
+      <p>If the nearest labeled case is farther than the novelty threshold (<span id="nov-thr"></span>, the 98th percentile of nearest-neighbour distances of held-out
+      validation cases), the case is marked <strong>novel pattern</strong>: no signature is forced, the action is "escalate", and <code>needs_human</code> is set.
+      Labeling it creates the knowledge the next similar case needs.</p>
+      <div class="chart" id="novchart"></div>
+    </div></details>
+
+  <details class="stage"><summary><span class="stage-num">5</span><span class="stage-title">Gemma 4 12B writes the report (local, constrained, checked)</span><span class="stage-sub">sentinel/e2e/writer.py · sentinel/llm_runtime.py</span></summary>
+    <div class="body">
+      <p>The LLM receives the classifier probabilities, the top-5 similar labeled cases (with engineer notes), the novelty result, the largest excursions in
+      physical units, the case notes, and the rule path's shadow verdict. It returns a JSON object constrained by a schema (signature, action, urgency,
+      what happened, why, rationale, concerns), so it can only answer with valid signatures and actions.</p>
+      <ul>
+        <li>It may change the classifier's answer only with a reason — and any change is flagged for review. It cannot override "novel".</li>
+        <li>Output checks: valid JSON, the action named in the rationale, every number traced back to the evidence. Site instructions stay vetted text.</li>
+        <li>Runtime: llama-cpp-python, Gemma 4 12B Q4_K_M, <code>device: auto|gpu|cpu</code>, partial GPU offload (~28 of 48 layers on a 6 GB card). A GPU failure is recorded in the audit trail and the report finishes on CPU.</li>
+        <li>No LoRA: a 12B model cannot be LoRA-tuned on this CPU-only laptop or a 6 GB GPU. The model learns <em>in context</em> from the retrieved labeled cases; approved reports are kept as training data for later.</li>
+      </ul>
+    </div></details>
+
+  <details class="stage"><summary><span class="stage-num">6</span><span class="stage-title">Rules in shadow mode + guardrails</span><span class="stage-sub">sentinel/e2e/pipeline.py</span></summary>
+    <div class="body">
+      <p>The original rule-based Sentinel runs on the same CSV. The report shows both answers side by side and whether they agree. <code>needs_human</code> is set when
+      they disagree, when learned confidence is below 0.6, on novelty, on a one-shot match, or when a guardrail fires:</p>
+      <ul>
+        <li><code>GR-TRIP</code> a trip is in the data but the learned signature does not explain one;</li>
+        <li><code>GR-RULE</code> the rules confirm an event with high confidence but the learned path says normal;</li>
+        <li><code>GR-DATA</code> / <code>GR-CHAN</code> / <code>GR-FLAT</code> too little data, no exhaust temperatures, flat-lined channels.</li>
+      </ul>
+      <div class="callout" id="shadow-callout"></div>
+    </div></details>
+</section>
+
+<section id="loop">
+  <div class="eyebrow">Top priority</div>
+  <h2>Drop-in, label on the fly, automatic retrain</h2>
+  <div class="grid-2">
+    <div class="card"><ol class="steps">
+      <li><strong>Drop</strong> one or many CSVs (or type a folder path). A <code>labels.csv</code> in that folder imports real historical labeled cases.</li>
+      <li><strong>Analyzed immediately</strong> — learned signature + action, rule verdict, agreement, top similar case, novelty, needs-human. About a second per file on CPU; the LLM report is on demand.</li>
+      <li><strong>Label</strong> — <em>✓ Confirm</em> (one click), or choose signature / action from dropdowns, or type a new signature name; optional note. Bulk table for a whole batch: edit the wrong rows, tick, save — or <em>Confirm all unlabeled</em>.</li>
+      <li><strong>Instant effect</strong> — the label and the case embedding go into the similarity index at once; the very next similar case cites it.</li>
+      <li><strong>Background retrain</strong> after every N labels (default 5, configurable) or on <em>Retrain now</em>. A head retrain takes seconds on CPU.</li>
+      <li><strong>Versioned</strong> — every retrain is a new version (v0001, v0002 …) with its held-out score; activate any version or roll back in one click.</li>
+    </ol></div>
+    <div class="card">
+      <h3 style="margin-top:0">What is stored (all local, <code>data/e2e</code>)</h3>
+      <ul>
+        <li><code>labels.jsonl</code> — every label (signature, action, Good/Not good, note, reviewer), append-only.</li>
+        <li><code>emb/</code> — the TS Pulse embedding of each analyzed case.</li>
+        <li><code>registry/</code> — retrained heads with metadata; <code>current.json</code> = active version.</li>
+        <li><code>metrics.jsonl</code> — analysis, label and retrain events that drive the dashboard.</li>
+        <li><code>taxonomy.json</code> — signatures engineers created, with their actions.</li>
+      </ul>
+      <p class="note">Export everything as a training set (<code>labels.csv</code> + CSVs) with <code>app.py e2e export-dataset</code>; re-fine-tune TS Pulse with
+      <code>scripts/train_e2e.py --extra</code>. Real historical Tier 2 cases drop in the same way.</p>
+    </div>
+  </div>
+</section>
+
+<section id="dashboard">
+  <div class="eyebrow">Watching it improve</div>
+  <h2>Learning dashboard</h2>
+  <p>The UI's <em>Learning dashboard</em> page updates as engineers work: labeled count per signature; held-out accuracy of every model version vs the rules;
+  rolling accuracy on the most recent labels (the prediction made <em>before</em> each label); agreement rate; % of reports accepted without edit; novelty rate.
+  Below is the same loop run as a scripted simulation through the real code path (<code>Engine.add_label</code>, background retrain every 5 labels):
+  the shipped model meets site-like data — shifted cans, a 4–5× larger frame, out-of-range magnitudes, and two fault types it has never seen:
+  a bearing-vibration fault (different physics → flagged novel) and a TC harness fault that <em>looks like</em> a cold sector (the model and the rules say
+  borescope; the right action is sensor repair). Signature accuracy also counts whether the new faults get their own name.</p>
+  <div class="card"><div class="chart-title">Labeling simulation — accuracy on held-out site cases</div>
+    <div class="chart-sub" id="sim-sub"></div><div class="chart" id="simchart"></div></div>
+  <div class="grid-2">
+    <div class="card"><div class="chart-title">New fault type: recognised after k labels</div>
+      <div class="chart-sub">Bearing-vibration cases (never in training). Index-only = one-shot retrieval without retraining.</div><div class="chart" id="kshot"></div></div>
+    <div class="card"><div class="chart-title">Cold start — learning from zero labels</div>
+      <div class="chart-sub">Test signature accuracy vs number of labels. Zero-shot TS Pulse is the honest "learn only from UI labels" curve.</div><div class="chart" id="cold"></div></div>
+  </div>
+</section>
+
+<section id="reports">
+  <div class="eyebrow">Real output</div>
+  <h2>Example reports</h2>
+  <p>Generated by the full pipeline on held-out cases with <span id="llm-model">the local LLM</span> on this build laptop's CPU (exactly as an engineer would get them, DRAFT until reviewed). Each tab is one case; the first lines of section 1 show the learned answer, the rules' answer and whether they agree.</p>
+  <div role="tablist" id="rtabs">%%REPORT_TABS%%</div>
+  %%REPORT_PANELS%%
+</section>
+
+<section id="eval">
+  <div class="eyebrow">Evaluation (held-out, synthetic)</div>
+  <h2>Learned path vs rules vs ground truth</h2>
+  <div class="callout warn">All numbers come from <strong>synthetic</strong> data generated by <code>scripts/generate_scenario_csvs.py --dataset</code>. The learned model was trained on the same
+  generator family (different seeds) — iid test accuracy is an upper bound. The rules were written before this generator existed. The variant and unseen-fault results
+  are the more honest ones. Full tables: <code>eval/EVAL.md</code>.</div>
+  <div class="card"><div class="chart-title">Action accuracy by signature — held-out test split</div>
+    <div class="chart-sub">Two signatures (IGV drift, fuel oscillation) have no rule analyzer.</div><div class="chart" id="perclass"></div></div>
+  <div class="grid-2">
+    <div class="card"><div class="chart-title">Variants (held out)</div><div class="chart-sub">Shifted can / ring size, larger frame, out-of-range magnitude. One label per variant group: signature accuracy <span id="var-oneshot"></span>.</div><div class="chart" id="variants"></div></div>
+    <div class="card"><div class="chart-title">One-shot: look-alike fault (TC harness)</div><div class="chart-sub">Action accuracy on the other harness cases after k engineer labels. 0 = before any label (most called "cold spot → borescope").</div><div class="chart" id="oneshot"></div></div>
+  </div>
+  <div class="card"><div class="chart-title">Learned signature confusion matrix (test split)</div><div class="chart-sub">Rows = truth, columns = learned decision. Stronger blue = more cases; the diagonal is correct.</div><div class="chart" id="confusion"></div></div>
+  <div class="card" id="llm-card"><div class="chart-title">Report writer (Gemma 4 12B) on held-out cases</div><div id="llmtable"></div></div>
+</section>
+
+<section id="run">
+  <div class="eyebrow">Hands-on</div>
+  <h2>How to run</h2>
+  <div class="grid-2">
+    <div class="card"><h3 style="margin-top:0">Install (any Windows PC)</h3>
+<pre><code>python sentinel_gt_ai.py setup
+# offline models from a USB copy:
+python sentinel_gt_ai.py setup --models-from E:\models
+python sentinel_gt_ai.py doctor</code></pre>
+      <p class="note">CUDA build of llama-cpp-python when an NVIDIA GPU is present, CPU build otherwise (automatic fallback). Models SHA-256 verified. See <code>DEPLOY.md</code>.</p></div>
+    <div class="card"><h3 style="margin-top:0">Use</h3>
+<pre><code>python sentinel_gt_ai.py                  # UI, http://localhost:8501
+python sentinel_gt_ai.py --device cpu     # force CPU
+python sentinel_gt_ai.py e2e run --folder D:\exports --analytic "Exhaust Cold Spot"
+python sentinel_gt_ai.py e2e label --case SGT-... --signature tc_sensor_fault
+python sentinel_gt_ai.py train --quick --device auto
+python sentinel_gt_ai.py e2e versions | rollback | retrain
+python scripts\eval_e2e.py      # re-run this evaluation</code></pre></div>
+  </div>
+  <table class="data"><thead><tr><th>Setting</th><th>Values</th><th>Where</th></tr></thead><tbody>
+    <tr><td><code>device</code></td><td>auto · gpu · cpu</td><td>settings.local.json · <code>--device</code> · Settings tab</td></tr>
+    <tr><td>model</td><td>Gemma 4 12B Q4_K_M</td><td>models/gemma-4-12b-it-Q4_K_M.gguf</td></tr>
+    <tr><td><code>n_gpu_layers</code></td><td>auto (from free VRAM) · number</td><td>settings.local.json</td></tr>
+    <tr><td><code>e2e_retrain_every</code></td><td>5 (labels per automatic retrain)</td><td>settings.local.json · Models page</td></tr>
+  </tbody></table>
+</section>
+
+<section id="limits">
+  <div class="eyebrow">Be careful</div>
+  <h2>Limitations and next steps</h2>
+  <div class="grid-2">
+    <div class="card"><h3 style="margin-top:0">Limitations</h3><ul>
+      <li><strong>Synthetic only.</strong> Training and evaluation data come from one generator. Real historian data has failure modes, mixed faults and operating modes it does not.</li>
+      <li>The novelty threshold was calibrated on synthetic validation cases — expect more novelty flags on real data at first; each label reduces them.</li>
+      <li>The classifier does not read the notes; only the LLM does (and any change it makes is flagged).</li>
+      <li>On this CPU-only laptop a Gemma report takes minutes; the drop-in analysis never waits for it.</li>
+      <li>No LoRA fine-tuning of the LLM (hardware); in-context learning from retrieved cases instead.</li>
+      <li>Decision support only — DRAFT until a Tier 2 engineer reviews it; rules stay as guardrails.</li>
+    </ul></div>
+    <div class="card"><h3 style="margin-top:0">Next steps</h3><ol>
+      <li>Run in shadow on real Tier 2 cases for a few weeks; label everything through the drop-in page.</li>
+      <li>Export the labels, re-fine-tune TS Pulse with <code>--extra</code>, re-run <code>eval_e2e.py</code> on a real held-out set.</li>
+      <li>Re-calibrate the novelty threshold on real validation cases.</li>
+      <li>Use the exported approved reports for a LoRA of a small model once a suitable GPU is available.</li>
+      <li>Only then consider letting agreed, high-confidence cases skip the second look.</li>
+    </ol></div>
+  </div>
+</section>
+</main>
+</div>
+<script id="data" type="application/json">%%DATA%%</script>
+<script>
+(function () {
+  "use strict";
+  var D = JSON.parse(document.getElementById("data").textContent);
+  var NS = "http://www.w3.org/2000/svg";
+  function css(v) { return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+  function el(tag, attrs, parent) { var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
+  function h(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
+  function pct(v) { return v === null || v === undefined || isNaN(v) ? "n/a" : (100 * v).toFixed(1) + " %"; }
+  function txt(parent, x, y, s, opts) { var t = el("text", {x: x, y: y, "font-size": (opts && opts.size) || 11, fill: (opts && opts.fill) || css("--muted"), "text-anchor": (opts && opts.anchor) || "start", "font-family": "system-ui, sans-serif"}, parent); t.textContent = s; return t; }
+  function tipFor(box) { var t = box.querySelector(".tip"); if (!t) { t = h("div", "tip"); t.hidden = true; box.appendChild(t); } return t; }
+  function showTip(box, x, y, rows, head) {
+    var t = tipFor(box); t.textContent = ""; t.hidden = false;
+    if (head) t.appendChild(h("div", "n", head));
+    rows.forEach(function (r) { var row = h("div", "row"); if (r.color) { var k = h("span", "k"); k.style.background = r.color; row.appendChild(k); } row.appendChild(h("span", "v", r.value)); row.appendChild(h("span", "n", r.name)); t.appendChild(row); });
+    var bw = box.clientWidth; t.style.left = Math.min(Math.max(0, x + 12), bw - t.offsetWidth - 4) + "px"; t.style.top = Math.max(0, y - 10) + "px";
+  }
+  function hideTip(box) { var t = box.querySelector(".tip"); if (t) t.hidden = true; }
+  function legend(box, items, rect) { var lg = h("div", "legend"); items.forEach(function (it) { var s = h("span"); var k = h("span", "key" + (rect ? " rect" : "")); k.style.background = it.color; s.appendChild(k); s.appendChild(document.createTextNode(it.name)); lg.appendChild(s); }); box.appendChild(lg); }
+  function tableToggle(box, head, rows) {
+    var b = h("button", "table-toggle", "Show data table"); b.type = "button"; var wrap = h("div", "table-view"); wrap.hidden = true;
+    var t = h("table", "data"); var th = h("thead"); var tr = h("tr"); head.forEach(function (c, i) { var c1 = h("th", i ? "num" : "", c); tr.appendChild(c1); }); th.appendChild(tr); t.appendChild(th);
+    var tb = h("tbody"); rows.forEach(function (r) { var tr2 = h("tr"); r.forEach(function (c, i) { tr2.appendChild(h("td", i ? "num" : "", String(c))); }); tb.appendChild(tr2); }); t.appendChild(tb); wrap.appendChild(t);
+    b.addEventListener("click", function () { wrap.hidden = !wrap.hidden; b.textContent = wrap.hidden ? "Show data table" : "Hide data table"; });
+    box.appendChild(b); box.appendChild(wrap);
+  }
+
+  function lineChart(id, xs, series, xlabel, opts) {
+    var box = document.getElementById(id); if (!box || !xs || !xs.length) return; box.textContent = "";
+    opts = opts || {}; var W = Math.max(380, box.clientWidth || 760), H = opts.height || 260, ml = 44, mr = 130, mt = 10, mb = 38, pw = W - ml - mr, ph = H - mt - mb;
+    var x0 = Math.min.apply(null, xs), x1 = Math.max.apply(null, xs); if (x1 === x0) x1 = x0 + 1;
+    var fx = function (v) { return ml + pw * (v - x0) / (x1 - x0); }, fy = function (v) { return mt + ph * (1 - v); };
+    if (series.length > 1) legend(box, series.map(function (s) { return {name: s.name, color: css(s.color)}; }));
+    var svg = el("svg", {viewBox: "0 0 " + W + " " + H, role: "img", "aria-label": opts.label || "line chart"}, box);
+    [0, 0.25, 0.5, 0.75, 1].forEach(function (v) { el("line", {x1: ml, x2: ml + pw, y1: fy(v), y2: fy(v), stroke: v ? css("--grid") : css("--axis"), "stroke-width": 1}, svg); txt(svg, ml - 6, fy(v) + 4, (v * 100) + "%", {anchor: "end"}); });
+    var span = x1 - x0, step = span <= 12 ? 1 : span <= 30 ? 5 : Math.max(5, Math.ceil(span / 8 / 10) * 10);
+    if (xs.length <= 8) xs.forEach(function (v) { txt(svg, fx(v), mt + ph + 16, String(v), {anchor: "middle"}); });
+    else for (var t = Math.ceil(x0 / step) * step; t <= x1; t += step) txt(svg, fx(t), mt + ph + 16, String(t), {anchor: "middle"});
+    txt(svg, ml + pw / 2, H - 4, xlabel, {anchor: "middle", fill: css("--ink-2")});
+    var ends = [];
+    series.forEach(function (s) {
+      var pts = xs.map(function (x, i) { return fx(x).toFixed(1) + "," + fy(s.values[i]).toFixed(1); }).join(" ");
+      el("polyline", {points: pts, fill: "none", stroke: css(s.color), "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round"}, svg);
+      var lx = fx(xs[xs.length - 1]), ly = fy(s.values[s.values.length - 1]);
+      el("circle", {cx: lx, cy: ly, r: 4, fill: css(s.color), stroke: css("--surface-1"), "stroke-width": 2}, svg);
+      ends.push({y: ly, label: s.name + " " + Math.round(100 * s.values[s.values.length - 1]) + "%"});
+    });
+    ends.sort(function (a, b) { return a.y - b.y; }); var last = -1e9;
+    ends.forEach(function (e) { var yy = Math.max(e.y + 4, last + 14); txt(svg, ml + pw + 10, yy, e.label, {fill: css("--ink-2"), size: 12}); last = yy; });
+    var cross = el("line", {y1: mt, y2: mt + ph, stroke: css("--muted"), "stroke-width": 1, opacity: 0}, svg);
+    var dots = series.map(function (s) { return el("circle", {r: 4, fill: css(s.color), stroke: css("--surface-1"), "stroke-width": 2, opacity: 0}, svg); });
+    var hit = el("rect", {x: ml, y: mt, width: pw, height: ph, fill: "transparent", tabindex: 0}, svg);
+    function at(i) {
+      var X = fx(xs[i]); cross.setAttribute("x1", X); cross.setAttribute("x2", X); cross.setAttribute("opacity", 1);
+      dots.forEach(function (d, k) { d.setAttribute("cx", X); d.setAttribute("cy", fy(series[k].values[i])); d.setAttribute("opacity", 1); });
+      var r = svg.getBoundingClientRect(), sc = r.width / W;
+      showTip(box, X * sc, fy(series[0].values[i]) * sc, series.map(function (s) { return {name: s.name, value: pct(s.values[i]), color: css(s.color)}; }), xlabel + ": " + xs[i]);
+    }
+    function near(evt) { var r = svg.getBoundingClientRect(); var x = (evt.clientX - r.left) * W / r.width; var best = 0; xs.forEach(function (v, i) { if (Math.abs(fx(v) - x) < Math.abs(fx(xs[best]) - x)) best = i; }); return best; }
+    var cur = xs.length - 1;
+    hit.addEventListener("pointermove", function (e) { cur = near(e); at(cur); });
+    hit.addEventListener("pointerleave", function () { cross.setAttribute("opacity", 0); dots.forEach(function (d) { d.setAttribute("opacity", 0); }); hideTip(box); });
+    hit.addEventListener("focus", function () { at(cur); });
+    hit.addEventListener("blur", function () { hideTip(box); cross.setAttribute("opacity", 0); });
+    hit.addEventListener("keydown", function (e) { if (e.key === "ArrowLeft") { cur = Math.max(0, cur - 1); at(cur); } if (e.key === "ArrowRight") { cur = Math.min(xs.length - 1, cur + 1); at(cur); } });
+    tableToggle(box, [xlabel].concat(series.map(function (s) { return s.name; })), xs.map(function (x, i) { return [x].concat(series.map(function (s) { return pct(s.values[i]); })); }));
+  }
+
+  function columns(id, cats, series, opts) {
+    var box = document.getElementById(id); if (!box || !cats.length) return; box.textContent = "";
+    opts = opts || {}; var W = Math.max(360, box.clientWidth || 760), H = opts.height || 250, ml = 44, mr = 8, mt = 8, mb = 40, pw = W - ml - mr, ph = H - mt - mb;
+    var fy = function (v) { return mt + ph * (1 - Math.max(0, Math.min(1, v))); };
+    legend(box, series.map(function (s) { return {name: s.name, color: css(s.color)}; }), true);
+    var svg = el("svg", {viewBox: "0 0 " + W + " " + H, role: "img", "aria-label": opts.label || "column chart"}, box);
+    [0, 0.25, 0.5, 0.75, 1].forEach(function (v) { el("line", {x1: ml, x2: ml + pw, y1: fy(v), y2: fy(v), stroke: v ? css("--grid") : css("--axis"), "stroke-width": 1}, svg); txt(svg, ml - 6, fy(v) + 4, (v * 100) + "%", {anchor: "end"}); });
+    var band = pw / cats.length, bw = Math.min(24, (band - 16) / series.length - 2);
+    cats.forEach(function (c, i) {
+      var gx = ml + band * i + (band - (bw + 2) * series.length + 2) / 2;
+      series.forEach(function (s, k) {
+        var v = s.values[i], x = gx + k * (bw + 2), y0 = fy(0), y1 = fy(v), r = Math.min(4, y0 - y1, bw / 2);
+        var d = y0 - y1 < 0.5 ? "" : "M" + x + "," + y0 + " L" + x + "," + (y1 + r) + " Q" + x + "," + y1 + " " + (x + r) + "," + y1 + " L" + (x + bw - r) + "," + y1 + " Q" + (x + bw) + "," + y1 + " " + (x + bw) + "," + (y1 + r) + " L" + (x + bw) + "," + y0 + " Z";
+        var p = el("path", {d: d, fill: css(s.color)}, svg);
+        var hitr = el("rect", {x: x - 2, y: mt, width: bw + 4, height: ph, fill: "transparent", tabindex: 0}, svg);
+        function on() { p.setAttribute("opacity", 0.75); var r2 = svg.getBoundingClientRect(), sc = r2.width / W; showTip(box, (x + bw) * sc, y1 * sc, [{name: s.name, value: pct(v), color: css(s.color)}], c); }
+        function off() { p.setAttribute("opacity", 1); hideTip(box); }
+        hitr.addEventListener("pointerenter", on); hitr.addEventListener("pointerleave", off); hitr.addEventListener("focus", on); hitr.addEventListener("blur", off);
+      });
+      txt(svg, ml + band * i + band / 2, fy(0) + 16, c, {anchor: "middle", fill: css("--ink-2")});
+    });
+    tableToggle(box, ["category"].concat(series.map(function (s) { return s.name; })), cats.map(function (c, i) { return [c].concat(series.map(function (s) { return pct(s.values[i]); })); }));
+  }
+
+  function ink(fill) {
+    var m = /rgb\((\d+),\s*(\d+),\s*(\d+)/.exec(fill), r, g, b;
+    if (m) { r = +m[1]; g = +m[2]; b = +m[3]; } else { var hx = fill.replace("#", ""); r = parseInt(hx.substr(0, 2), 16); g = parseInt(hx.substr(2, 2), 16); b = parseInt(hx.substr(4, 2), 16); }
+    return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 > 0.55 ? "#0b0b0b" : "#ffffff";
+  }
+  function confusion(id, m) {
+    var box = document.getElementById(id); if (!box || !m) return; box.textContent = "";
+    var rows = m.rows, cols = m.cols, M = m.matrix, cw = 64, rh = 26, lw = 120, top = 70;
+    var W = lw + cw * cols.length + 10, H = top + rh * rows.length + 10, mx = 1;
+    M.forEach(function (r) { r.forEach(function (v) { mx = Math.max(mx, v); }); });
+    var svg = el("svg", {viewBox: "0 0 " + W + " " + H, role: "img", "aria-label": "confusion matrix"}, box);
+    var steps = ["--seq-0", "--seq-1", "--seq-2", "--seq-3", "--seq-4", "--seq-5"];
+    cols.forEach(function (c, j) { var t = txt(svg, lw + cw * j + cw / 2, top - 8, D.short[c] || c, {anchor: "start", fill: css("--ink-2")}); t.setAttribute("transform", "rotate(-35 " + (lw + cw * j + cw / 2) + " " + (top - 8) + ")"); });
+    rows.forEach(function (r, i) {
+      txt(svg, lw - 8, top + rh * i + rh / 2 + 4, D.short[r] || r, {anchor: "end", fill: css("--ink-2")});
+      cols.forEach(function (c, j) {
+        var v = M[i][j], lvl = v === 0 ? 0 : Math.min(5, 1 + Math.floor(4.999 * v / mx));
+        var fillc = css(steps[lvl]);
+        var rect = el("rect", {x: lw + cw * j + 1, y: top + rh * i + 1, width: cw - 2, height: rh - 2, rx: 3, fill: fillc, tabindex: 0}, svg);
+        if (v) txt(svg, lw + cw * j + cw / 2, top + rh * i + rh / 2 + 4, String(v), {anchor: "middle", fill: ink(fillc), size: 11});
+        function on() { rect.setAttribute("stroke", css("--ink")); var r2 = svg.getBoundingClientRect(), sc = r2.width / W; showTip(box, (lw + cw * (j + 1)) * sc, (top + rh * i) * sc, [{name: "cases", value: String(v)}], "truth " + (D.short[r] || r) + " → " + (D.short[c] || c)); }
+        function off() { rect.removeAttribute("stroke"); hideTip(box); }
+        rect.addEventListener("pointerenter", on); rect.addEventListener("pointerleave", off); rect.addEventListener("focus", on); rect.addEventListener("blur", off);
+      });
+    });
+    tableToggle(box, ["truth \\ learned"].concat(cols.map(function (c) { return D.short[c] || c; })), rows.map(function (r, i) { return [D.short[r] || r].concat(M[i]); }));
+  }
+
+  function heat(id, sample) {
+    var box = document.getElementById(id); if (!box || !sample) return; box.textContent = "";
+    var chans = D.channels, vals = sample.x, nT = vals.length, nC = chans.length, lw = 150, cw = 600 / nT, rh = 16, W = lw + 600 + 10, H = rh * nC + 30;
+    var svg = el("svg", {viewBox: "0 0 " + W + " " + H, role: "img", "aria-label": "model input heatmap"}, box);
+    function color(v) {
+      var a = Math.min(1, Math.abs(v) / 4); var mid = css("--div-mid"), pole = css(v < 0 ? "--div-neg" : "--div-pos");
+      function rgb(hx) { hx = hx.replace("#", ""); return [parseInt(hx.substr(0, 2), 16), parseInt(hx.substr(2, 2), 16), parseInt(hx.substr(4, 2), 16)]; }
+      var m = rgb(mid), p = rgb(pole); return "rgb(" + m.map(function (c, i) { return Math.round(c + (p[i] - c) * a); }).join(",") + ")";
+    }
+    chans.forEach(function (c, ci) {
+      txt(svg, lw - 8, rh * ci + rh / 2 + 4, D.channel_short[c] || c, {anchor: "end", fill: css("--ink-2"), size: 10});
+      for (var t = 0; t < nT; t++) el("rect", {x: lw + t * cw, y: rh * ci + 1, width: cw + 0.3, height: rh - 2, fill: color(vals[t][ci])}, svg);
+    });
+    el("line", {x1: lw + 300, x2: lw + 300, y1: 0, y2: rh * nC, stroke: css("--surface-1"), "stroke-width": 2}, svg);
+    txt(svg, lw + 150, rh * nC + 18, "whole record", {anchor: "middle"}); txt(svg, lw + 450, rh * nC + 18, "48 h zoom on the strongest excursion", {anchor: "middle"});
+    var hit = el("rect", {x: lw, y: 0, width: 600, height: rh * nC, fill: "transparent"}, svg);
+    hit.addEventListener("pointermove", function (e) {
+      var r = svg.getBoundingClientRect(), sx = (e.clientX - r.left) * W / r.width, sy = (e.clientY - r.top) * H / r.height;
+      var t = Math.max(0, Math.min(nT - 1, Math.floor((sx - lw) / cw))), ci = Math.max(0, Math.min(nC - 1, Math.floor(sy / rh)));
+      showTip(box, (e.clientX - r.left), (e.clientY - r.top), [{name: "score (signed log robust z)", value: vals[t][ci].toFixed(2)}], (D.channel_labels[chans[ci]] || chans[ci]) + (t < nT / 2 ? " · whole record" : " · zoom"));
+    });
+    hit.addEventListener("pointerleave", function () { hideTip(box); });
+    var p = h("p", "note", "Case: " + sample.title + " — truth: " + sample.truth + "; learned: " + sample.learned + "."); box.appendChild(p);
+  }
+
+  function hist(id, a, b, thr) {
+    var box = document.getElementById(id); if (!box || !a || !a.length) return; box.textContent = "";
+    var all = a.concat(b), mx = Math.max.apply(null, all.concat([thr])) * 1.05, bins = 30, W = Math.max(380, box.clientWidth || 760), H = 220, ml = 44, mr = 10, mt = 8, mb = 36, pw = W - ml - mr, ph = H - mt - mb;
+    function counts(v) { var c = new Array(bins).fill(0); v.forEach(function (x) { c[Math.min(bins - 1, Math.floor(x / mx * bins))]++; }); return c.map(function (n) { return n / v.length; }); }
+    var ca = counts(a), cb = counts(b), ymax = Math.max.apply(null, ca.concat(cb)) * 1.1;
+    var S = [{name: "known signatures (test)", c: ca, color: "--series-1"}, {name: "unseen fault type", c: cb, color: "--series-2"}];
+    legend(box, S.map(function (s) { return {name: s.name, color: css(s.color)}; }), true);
+    var svg = el("svg", {viewBox: "0 0 " + W + " " + H, role: "img", "aria-label": "nearest-neighbour distance distribution"}, box);
+    el("line", {x1: ml, x2: ml + pw, y1: mt + ph, y2: mt + ph, stroke: css("--axis")}, svg);
+    var bw = pw / bins;
+    S.forEach(function (s, k) { s.c.forEach(function (v, i) { if (!v) return; var x = ml + i * bw + 1 + k * (bw / 2 - 1), hgt = ph * v / ymax; el("rect", {x: x, y: mt + ph - hgt, width: bw / 2 - 2, height: hgt, rx: 2, fill: css(s.color)}, svg); }); });
+    var tx = ml + pw * thr / mx; el("line", {x1: tx, x2: tx, y1: mt, y2: mt + ph, stroke: css("--ink"), "stroke-width": 1.5}, svg);
+    txt(svg, tx + 4, mt + 12, "novelty threshold " + thr, {fill: css("--ink-2"), size: 11});
+    for (var i = 0; i <= 5; i++) { var v = mx * i / 5; txt(svg, ml + pw * i / 5, mt + ph + 16, v.toFixed(2), {anchor: "middle"}); }
+    txt(svg, ml + pw / 2, H - 4, "cosine distance to the nearest labeled case", {anchor: "middle", fill: css("--ink-2")});
+  }
+
+  function render() {
+    var R = D.results, T = R.test, U = R.unseen, V = R.variant;
+    var tiles = document.getElementById("tiles"); tiles.textContent = "";
+    var sim = R.sim_site ? R.sim_site.curve : null;
+    [["Action accuracy, learned path", pct(T.learned_action_acc), "held-out test · rules " + pct(T.rules_action_acc)],
+     ["Same, on the 6 signatures the rules cover", pct(T.rule_classes.learned_action_acc), "rules " + pct(T.rule_classes.rules_action_acc)],
+     ["Unseen fault flagged as novel", pct(U.novelty_detection_rate), "bearing fault never trained on; " + Object.keys(U.forced_into).reduce(function (a, k) { return a + U.forced_into[k]; }, 0) + " of " + U.n + " forced into a known class"],
+     ["Look-alike fault after ONE label", R.lookalike ? pct(R.lookalike.learned_action_acc) + " → " + pct(R.lookalike.kshot[0].action_acc_index_only) : "n/a", R.lookalike ? "TC harness fault (looks like a cold spot) · rules " + pct(R.lookalike.rules_action_acc) : ""],
+     ["Labeling simulation", sim ? pct(sim[0].learned) + " → " + pct(sim[sim.length - 1].learned) : "n/a", sim ? "after " + sim[sim.length - 1].labels + " labels · rules " + pct(sim[sim.length - 1].rules) : ""]
+    ].forEach(function (t) { var d = h("div", "tile"); d.appendChild(h("div", "label", t[0])); d.appendChild(h("div", "value", t[1])); d.appendChild(h("div", "sub", t[2])); tiles.appendChild(d); });
+    var card = R.card; document.getElementById("ft-info").textContent = card.data.train + " training cases, best validation accuracy " + pct(card.finetune.best.val_acc) + " at epoch " + card.finetune.best.epoch + ", " + card.train_minutes + " min on this laptop's CPU";
+    document.getElementById("match-thr").textContent = card.calibration.match_threshold;
+    document.getElementById("nov-thr").textContent = card.calibration.novelty_threshold;
+    var sh = T.shadow; document.getElementById("shadow-callout").textContent = "On the held-out test split the two paths agree on " + pct(sh.agreement_rate) + " of cases and are then right " + pct(sh.acc_when_agree) + " of the time. needs_human is raised on " + pct(sh.needs_human_rate) + " of cases and catches " + sh.errors_caught_by_needs_human + " of the " + sh.errors_total + " learned-path errors; unflagged cases are right " + pct(sh.auto_accept_acc) + " of the time.";
+    if (D.finetune && D.finetune.length) lineChart("ftchart", D.finetune.map(function (e) { return e.epoch; }), [{name: "validation accuracy", values: D.finetune.map(function (e) { return e.val_acc; }), color: "--series-1"}], "fine-tune epoch", {height: 200});
+    if (U.nn_test_all) hist("novchart", U.nn_test_all, U.nn_unseen_all, U.nn_distance_median.threshold);
+    if (sim) { document.getElementById("sim-sub").textContent = R.sim_site.stream + " site cases labeled one by one; " + R.sim_site.holdout + " held-out site cases scored after every 5 labels. Rules do not learn."; lineChart("simchart", sim.map(function (p) { return p.labels; }), [{name: "Learned action", values: sim.map(function (p) { return p.learned; }), color: "--series-1"}, {name: "Rules action", values: sim.map(function (p) { return p.rules; }), color: "--series-2"}, {name: "Learned signature", values: sim.map(function (p) { return p.learned_signature === undefined ? p.learned : p.learned_signature; }), color: "--series-3"}], "engineer labels"); }
+    var ks = U.kshot; lineChart("kshot", ks.map(function (k) { return k.labels; }), [{name: "after retrain", values: ks.map(function (k) { return k.recognised_after_retrain; }), color: "--series-1"}, {name: "index only", values: ks.map(function (k) { return k.recognised_index_only; }), color: "--series-2"}], "labeled examples of the new fault", {height: 220});
+    if (R.sim_cold) { var ft = R.sim_cold.fine_tuned, zs = R.sim_cold.zero_shot; lineChart("cold", ft.map(function (p) { return p.labels; }), [{name: "fine-tuned", values: ft.map(function (p) { return p.learned_acc; }), color: "--series-1"}, {name: "zero-shot", values: zs.map(function (p) { return p.learned_acc; }), color: "--series-2"}], "labels", {height: 220}); }
+    columns("perclass", T.per_class.map(function (p) { return D.short[p.class] || p.class; }), [{name: "Learned path", values: T.per_class.map(function (p) { return p.learned_action_acc; }), color: "--series-1"}, {name: "Rules", values: T.per_class.map(function (p) { return p.rules_action_acc; }), color: "--series-2"}]);
+    var vk = Object.keys(V.by_kind); columns("variants", vk, [{name: "Learned action", values: vk.map(function (k) { return V.by_kind[k].learned_action_acc; }), color: "--series-1"}, {name: "Rules action", values: vk.map(function (k) { return V.by_kind[k].rules_action_acc; }), color: "--series-2"}], {height: 220});
+    if (R.lookalike) { var LK = R.lookalike; lineChart("oneshot", [0].concat(LK.kshot.map(function (k) { return k.labels; })), [{name: "index only", values: [LK.learned_action_acc].concat(LK.kshot.map(function (k) { return k.action_acc_index_only; })), color: "--series-1"}, {name: "after retrain", values: [LK.learned_action_acc].concat(LK.kshot.map(function (k) { return k.action_acc_after_retrain; })), color: "--series-3"}, {name: "rules", values: [LK.rules_action_acc].concat(LK.kshot.map(function () { return LK.rules_action_acc; })), color: "--series-2"}], "engineer labels of the new fault", {height: 220}); }
+    document.getElementById("var-oneshot").textContent = pct(V.one_shot.signature_acc_before) + " → " + pct(V.one_shot.signature_acc_after_one_label) + " (already high without it)";
+    confusion("confusion", T.confusion_signature);
+    var lt = document.getElementById("llmtable"); lt.textContent = "";
+    if (R.llm && R.llm.cases) {
+      var s = R.llm.summary; lt.appendChild(h("p", "chart-sub", R.llm.model + " on " + R.llm.device.toUpperCase() + ": valid JSON " + s.valid_json + "/" + s.n + ", numbers traced to evidence " + (s.numbers_traced || "n/a") + ", final action accuracy " + pct(s.final_action_acc) + " (classifier alone " + pct(s.classifier_action_acc) + "), LLM changed the classifier's action on " + s.llm_changed_action + " case(s); " + s.mean_seconds + " s per report on CPU."));
+      lt.appendChild(h("p", "", "What we saw: the writer explains the learned decision well (cites the nearest labeled case, uses the rule shadow, handled misleading notes sensibly) but never overrode the classifier, so classifier errors pass through; it once read a note in the wrong direction and over-read excursion scores caused by a trip. Its prose is a draft for review, not a second opinion."));
+      if (s.wrong_and_not_flagged && s.wrong_and_not_flagged.length) lt.appendChild(h("div", "callout warn", "Confidently wrong and not flagged: " + s.wrong_and_not_flagged.join(", ") + " — the learned path and the rules agreed on the wrong action (borescope on a TC harness fault), so shadow mode had nothing to flag. One engineer label fixes the following look-alike cases (see the one-shot chart above)."));
+      var t = h("table", "data"); var tr = h("tr"); ["case", "truth", "classifier", "LLM final", "rules", "notes hint", "time"].forEach(function (c) { tr.appendChild(h("th", "", c)); }); var th = h("thead"); th.appendChild(tr); t.appendChild(th);
+      var tb = h("tbody"); R.llm.cases.forEach(function (c) { var r = h("tr"); [c.case_id, c.truth_action, c.classifier_action, c.final_action + (c.final_correct ? " ✓" : " ✗"), c.rules_action, c.notes_hint, Math.round(c.seconds) + " s"].forEach(function (v) { r.appendChild(h("td", "", String(v))); }); tb.appendChild(r); }); t.appendChild(tb); lt.appendChild(t);
+      document.getElementById("llm-model").textContent = R.llm.model;
+    } else { lt.appendChild(h("p", "note", "LLM subset not run yet (python scripts/eval_e2e.py --llm-only --llm-cases 8).")); }
+    var sel = document.getElementById("seesel");
+    if (!sel.options.length) { D.samples.forEach(function (s, i) { var o = document.createElement("option"); o.value = i; o.textContent = s.title; sel.appendChild(o); }); sel.addEventListener("change", function () { heat("sees", D.samples[+sel.value]); }); }
+    heat("sees", D.samples[+sel.value || 0]);
+  }
+
+  // tabs
+  document.querySelectorAll('[role="tablist"]').forEach(function (list) {
+    var tabs = list.querySelectorAll('[role="tab"]');
+    function sel(tab) { tabs.forEach(function (t) { var on = t === tab; t.setAttribute("aria-selected", on); t.tabIndex = on ? 0 : -1; var p = document.querySelector('[data-panel="' + t.dataset.tab + '"]'); if (p) p.hidden = !on; }); }
+    tabs.forEach(function (t, i) { t.addEventListener("click", function () { sel(t); }); t.addEventListener("keydown", function (e) { var j = e.key === "ArrowRight" ? i + 1 : e.key === "ArrowLeft" ? i - 1 : -1; if (j >= 0 && j < tabs.length) { tabs[j].focus(); sel(tabs[j]); } }); });
+    if (tabs.length) sel(tabs[0]);
+  });
+  // nav highlight
+  var links = document.querySelectorAll("nav a");
+  var obs = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) links.forEach(function (a) { a.classList.toggle("active", a.getAttribute("href") === "#" + e.target.id); }); }); }, {rootMargin: "-40% 0px -55% 0px"});
+  document.querySelectorAll("main section").forEach(function (s) { obs.observe(s); });
+  document.getElementById("theme").addEventListener("click", function () { var r = document.documentElement; r.dataset.theme = r.dataset.theme === "dark" ? "light" : "dark"; render(); });
+  document.getElementById("expand").addEventListener("click", function () { var all = document.querySelectorAll("details.stage"); var open = Array.prototype.some.call(all, function (d) { return !d.open; }); all.forEach(function (d) { d.open = open; }); this.textContent = open ? "Collapse all stages" : "Expand all stages"; });
+  if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) document.documentElement.dataset.theme = "dark";
+  render();
+})();
+</script>
+</body>
+</html>

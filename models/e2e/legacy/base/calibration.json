@@ -1,0 +1,22 @@
+{
+  "novelty_threshold": 0.5554,
+  "match_threshold": 0.3403,
+  "low_confidence": 0.6,
+  "novelty_quantile": 0.98,
+  "k": 5,
+  "notes": "from 200 validation cases: NN distance median 0.339, q98 0.555",
+  "residual_novelty": true,
+  "novelty_border": 0.5554,
+  "novelty_conf": 0.7,
+  "residual_thresholds": {
+    "exhaust": 6.0,
+    "spread": 6.0,
+    "egt": 6.0,
+    "dynamics": 6.0,
+    "vibration": 7.1,
+    "fuel": 7.4,
+    "igv": 9.8,
+    "other": 9.8
+  },
+  "residual_notes": "from 200 validation cases: residual-unexplained 4 (correctly classified 0); border q98 = 0.5554, confidence floor 0.7: flags 4 misclassified and 0 correct validation cases (budget 1%)"
+}

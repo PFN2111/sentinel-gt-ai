@@ -1,0 +1,20 @@
+{
+  "classes": [
+    "bearing_wear_trend",
+    "normal",
+    "vibration_probe_fault"
+  ],
+  "meta": {
+    "n": 180,
+    "per_class": {
+      "bearing_wear_trend": 60,
+      "normal": 60,
+      "vibration_probe_fault": 60
+    },
+    "frames": [
+      "*"
+    ],
+    "frame_key": "profile",
+    "stats_view": true
+  }
+}

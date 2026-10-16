@@ -1,0 +1,55 @@
+{
+  "profile": "bearing_vibration",
+  "profile_rev": 1,
+  "channels_hash": "ef376b89dc44",
+  "embedder": "tspulse_ci",
+  "tier": "head",
+  "classes": [
+    "bearing_wear_trend",
+    "normal",
+    "vibration_probe_fault"
+  ],
+  "frames": [
+    "*"
+  ],
+  "n_train": 180,
+  "n_val": 30,
+  "n_heldout": 60,
+  "gate": {
+    "status": "pass",
+    "reasons": [
+      "shipped alert-type bundle"
+    ]
+  },
+  "sources": {
+    "original": "dataset",
+    "profile": "dataset_profiles",
+    "original_manifest_sha256": "7ed0fc825d2e7cf3f45f892d9f021a7b047918ad1220e652fb51f2a010524e2c",
+    "profile_manifest_sha256": "bcd6bbf45ec846e7afb551be3ade95e5b2aa1399acb5935f418973d48c32a52c",
+    "roles": {
+      "train": 180,
+      "val": 30,
+      "heldout": 60
+    },
+    "signatures": {
+      "train": {
+        "bearing_wear_trend": 60,
+        "normal": 60,
+        "vibration_probe_fault": 60
+      },
+      "val": {
+        "bearing_wear_trend": 10,
+        "normal": 10,
+        "vibration_probe_fault": 10
+      },
+      "heldout": {
+        "bearing_wear_trend": 20,
+        "normal": 20,
+        "vibration_probe_fault": 20
+      }
+    },
+    "by_source": {
+      "synthetic_profile": 270
+    }
+  }
+}

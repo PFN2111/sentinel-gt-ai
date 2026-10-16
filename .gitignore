@@ -1,0 +1,53 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# Local case data and feedback (sensitive plant data stays on this machine)
+data/*
+!data/.gitkeep
+
+# Machine-specific settings (device, profile, model paths)
+settings.local.json
+
+# Large model weights / binaries (the small learned model in models/e2e is committed: portable deploy)
+models/*
+!models/README.md
+!models/e2e/
+
+# Agent run logs, prompts, and local build notes (not part of the app)
+*.log
+*prompt*.txt
+PROGRESS*.md
+DESIGN*.md
+!docs/dev/DESIGN.md
+REVIEW_*.md
+FIX_*.md
+DYNAMIC_STATUS.md
+FRAME_FIX.md
+E2E_BRIEF*.md
+SENTINEL_BRIEF.md
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Env / secrets
+.env
+.env.*
+
+# Scratch work
+.scratch/
+
+# Local port note. Not part of the app.
+MERGE_READY.md
+
+# Engineer documents added from "Teach the app" (site-specific, stay on this machine)
+knowledge/user/

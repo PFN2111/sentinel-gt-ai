@@ -1,0 +1,533 @@
+{
+  "schema": "sentinel.report/1",
+  "app": {
+    "name": "Sentinel GT AI",
+    "version": "1.0.0"
+  },
+  "case_id": "SGT-20261012-153938-6af7",
+  "created": "2026-10-12T15:39:38",
+  "case": {
+    "unit": "Unit 2",
+    "frame": "7FA.03",
+    "notes": "Unit 2 (7FA.03) at baseload. Tier 1 opened the case from the Exhaust Cold Spot analytic (spread advisory). No alarms other than the spread advisory. Last combustion inspection March 2025. No TC or harness work since that outage.",
+    "notes_interpreted": [
+      "unit = Unit 2",
+      "frame = 7FA.03",
+      "flag: outage"
+    ]
+  },
+  "analytic": {
+    "entered": "Exhaust Cold Spot",
+    "normalised": "exhaust cold spot",
+    "resolved": "cold_spot",
+    "title": "Exhaust cold spot",
+    "known": true,
+    "reason": "matched cold spot keywords"
+  },
+  "input": {
+    "source_name": "cold_spot_01.csv",
+    "sha256": "84cb25eb714ef60a7bea22f45ef65870c05218545ccecc3976e6ac0de89a4c9d",
+    "rows": 8640,
+    "columns": 39,
+    "start": "2025-11-01 00:00",
+    "end": "2025-12-30 23:50",
+    "interval_minutes": 10.0,
+    "quality": {
+      "rows": 8640,
+      "columns": 39,
+      "start": "2025-11-01 00:00",
+      "end": "2025-12-30 23:50",
+      "duration_hours": 1439.83,
+      "interval_minutes": 10.0,
+      "has_timestamps": true,
+      "missing_fraction": {},
+      "poor_channels": [],
+      "flatlined_channels": [],
+      "issues": []
+    },
+    "roles": {
+      "load": [
+        "load_MW"
+      ],
+      "cdp": [
+        "CDP_bar"
+      ],
+      "cdt": [
+        "CDT_C"
+      ],
+      "egt_avg": [
+        "EGT_avg_C"
+      ],
+      "spread": [
+        "EGT_spread_C"
+      ],
+      "fuel": [
+        "fuel_flow_kg_s"
+      ],
+      "igv": [
+        "IGV_deg"
+      ],
+      "vibration": [
+        "vib_DE_mm_s",
+        "vib_NDE_mm_s"
+      ],
+      "lube_oil": [
+        "lube_oil_C"
+      ],
+      "dynamics": [
+        "comb_dyn_psi"
+      ],
+      "trip": [
+        "trip_active"
+      ]
+    }
+  },
+  "findings": {
+    "analytic": "cold_spot",
+    "analyzer_version": "cold_spot/1.0",
+    "detected": true,
+    "summary": "Cold sector TC1, TC2, TC27 (3 TCs, adjacent), TC1 22.6 C below normal, gradual onset at 2025-11-23 19:50, 6.0 days, cleared; spread 5.7 -> 26.7 C.",
+    "events": [
+      {
+        "start_i": 3287,
+        "end_i": 4146,
+        "peak_i": 3416,
+        "start": "2025-11-23 19:50",
+        "end": "2025-11-29 19:00",
+        "peak": "2025-11-24 17:20",
+        "duration_h": 143.2,
+        "active_at_end": false
+      }
+    ],
+    "signature": {
+      "baseline_spread_C": 5.7,
+      "detected": true,
+      "depth_C": 22.6,
+      "primary_tc": "TC1",
+      "sector": [
+        "TC1",
+        "TC2",
+        "TC27"
+      ],
+      "sector_size": 3,
+      "adjacent": true,
+      "onset_ramp_min": 290.0,
+      "step_onset": false,
+      "duration_h": 143.2,
+      "active_at_end": false,
+      "peak_spread_C": 26.7,
+      "fuel_residual_pct": 0.7,
+      "load_delta_MW": 0.0,
+      "vib_delta_mm_s": -0.0,
+      "ring_size": 27
+    },
+    "evidence": [
+      {
+        "label": "Cold sector",
+        "value": "TC1, TC2, TC27 (TC ring, 3 of 27)",
+        "source": "CS-R2",
+        "detail": "TCs >= 30% of primary depth"
+      },
+      {
+        "label": "Primary cold TC / depth",
+        "value": "TC1, 22.6 C below its normal",
+        "source": "CS-R2",
+        "detail": "90th pct over event"
+      },
+      {
+        "label": "Sector contiguity",
+        "value": "adjacent arc",
+        "source": "CS-R3",
+        "detail": ""
+      },
+      {
+        "label": "Onset",
+        "value": "gradual onset ramp: 290 min (4.8 h) from 10% to 90% depth; max single-sample jump 2.2 C",
+        "source": "CS-R4",
+        "detail": ""
+      },
+      {
+        "label": "Event window",
+        "value": "2025-11-23 19:50 -> 2025-11-29 19:00 (6.0 days)",
+        "source": "CS-R1",
+        "detail": ""
+      },
+      {
+        "label": "Status at end of data",
+        "value": "cleared before end of data",
+        "source": "CS-R1",
+        "detail": ""
+      },
+      {
+        "label": "Exhaust spread",
+        "value": "baseline 5.7 C -> 26.7 C during event (95th pct)",
+        "source": "CS-R5",
+        "detail": ""
+      },
+      {
+        "label": "Fuel flow vs load model",
+        "value": "+0.70% during event",
+        "source": "CS-R6",
+        "detail": "positive = control compensating for lost heat"
+      },
+      {
+        "label": "Load change during event",
+        "value": "+0.00 MW",
+        "source": "CS-R6",
+        "detail": ""
+      },
+      {
+        "label": "Vibration change during event",
+        "value": "+0.00 mm/s (vib_DE_mm_s)",
+        "source": "CS-R6",
+        "detail": ""
+      },
+      {
+        "label": "Combustion dynamics change",
+        "value": "+0.00 psi (comb_dyn_psi)",
+        "source": "CS-R6",
+        "detail": ""
+      },
+      {
+        "label": "TC1 signal health",
+        "value": "normal noise, plausible values",
+        "source": "CS-R7",
+        "detail": ""
+      }
+    ],
+    "hypotheses": [
+      {
+        "cause": "combustion_hardware",
+        "title": "True cold sector from the combustor can(s) upstream of TC1, TC2, TC27 (fuel nozzle restriction / combustion hardware)",
+        "score": 0.85,
+        "action": "borescope",
+        "secondary": [],
+        "rules": [
+          "CS-R2",
+          "CS-R3",
+          "CS-R4",
+          "CS-R6"
+        ],
+        "support": [
+          "3 adjacent TCs cool together (TC1, TC2, TC27) \u2014 a real cold gas sector",
+          "gradual onset, consistent with progressive fuel-nozzle restriction / combustor change",
+          "fuel flow +0.70% above the load model \u2014 control compensating for lost heat release"
+        ],
+        "against": []
+      },
+      {
+        "cause": "instrumentation",
+        "title": "Thermocouple / harness fault on TC1",
+        "score": 0.15,
+        "action": "sensor_fix_replace",
+        "secondary": [],
+        "rules": [
+          "CS-R3",
+          "CS-R4",
+          "CS-R7"
+        ],
+        "support": [],
+        "against": [
+          "3 TCs are cold together \u2014 one failed TC cannot do that",
+          "gradual onset over hours, not a step"
+        ]
+      }
+    ],
+    "missing_channels": [],
+    "explained_channels": [
+      "TC1",
+      "TC2",
+      "TC3",
+      "TC4",
+      "TC5",
+      "TC6",
+      "TC7",
+      "TC8",
+      "TC9",
+      "TC10",
+      "TC11",
+      "TC12",
+      "TC13",
+      "TC14",
+      "TC15",
+      "TC16",
+      "TC17",
+      "TC18",
+      "TC19",
+      "TC20",
+      "TC21",
+      "TC22",
+      "TC23",
+      "TC24",
+      "TC25",
+      "TC26",
+      "TC27",
+      "EGT_spread_C",
+      "EGT_avg_C"
+    ],
+    "timeline": [
+      [
+        "2025-11-23 19:50",
+        "TC1 begins to run cold; sector TC1, TC2, TC27 follows"
+      ],
+      [
+        "2025-11-24 17:20",
+        "Deepest point: TC1 22.6 C below normal, spread ~27 C"
+      ],
+      [
+        "2025-11-29 19:00",
+        "Sector back to normal (event duration 6.0 days)"
+      ]
+    ],
+    "what_happened": "From 2025-11-23 19:50 the exhaust TC ring developed a cold sector at TC1, TC2, TC27. TC1 ran 22.6 C below its normal position in the ring and exhaust spread rose from 5.7 C to about 26.7 C. The onset was gradual (290 min from 10% to 90% depth) and the event lasted 6.0 days in total, clearing at 2025-11-29 19:00. Fuel flow ran +0.70% above the load model during the event.",
+    "why": "Most likely cause: True cold sector from the combustor can(s) upstream of TC1, TC2, TC27 (fuel nozzle restriction / combustion hardware) (rule support 0.85). 3 adjacent TCs cool together (TC1, TC2, TC27) \u2014 a real cold gas sector; gradual onset, consistent with progressive fuel-nozzle restriction / combustor change; fuel flow +0.70% above the load model \u2014 control compensating for lost heat release. Alternative considered: Thermocouple / harness fault on TC1 (0.15) \u2014 3 TCs are cold together \u2014 one failed TC cannot do that; gradual onset over hours, not a step.",
+    "severity": "medium",
+    "urgency": "next_opportunity",
+    "escalate": false,
+    "operating_guidance": [
+      "Event cleared on its own \u2014 trend spread and the sector TCs for recurrence; recurrence brings the inspection forward."
+    ],
+    "site_checks": [
+      "Verify TC1, TC2, TC27 readings in the controller (and spare/redundant TCs if fitted) before opening the unit.",
+      "Apply the unit swirl chart to map TC1, TC2, TC27 back to the upstream combustor can(s); inspect those fuel nozzles, liners and transition pieces.",
+      "Check fuel-nozzle passages, purge and manifold pressures for that can (restriction / coking)."
+    ],
+    "review_flags": [],
+    "data_gaps": [],
+    "chart": {
+      "channels": [
+        "EGT_spread_C",
+        "TC1",
+        "TC2",
+        "TC27",
+        "fuel_flow_kg_s"
+      ],
+      "event": [
+        3287,
+        4146
+      ]
+    },
+    "strength": 0.85
+  },
+  "anomaly": {
+    "zscore": {
+      "engine": "robust_zscore",
+      "threshold_z": 6.0,
+      "channels": [
+        {
+          "channel": "EGT_spread_C",
+          "max_z": 24.4,
+          "minutes": 8520,
+          "first": "2025-11-23 21:10",
+          "last": "2025-11-29 19:00",
+          "windows": [
+            [
+              3295,
+              4146
+            ]
+          ]
+        },
+        {
+          "channel": "TC1",
+          "max_z": 15.0,
+          "minutes": 8460,
+          "first": "2025-11-23 22:10",
+          "last": "2025-11-29 19:00",
+          "windows": [
+            [
+              3301,
+              4146
+            ]
+          ]
+        },
+        {
+          "channel": "TC2",
+          "max_z": 11.2,
+          "minutes": 8410,
+          "first": "2025-11-23 23:00",
+          "last": "2025-11-29 19:00",
+          "windows": [
+            [
+              3306,
+              4146
+            ]
+          ]
+        },
+        {
+          "channel": "TC27",
+          "max_z": 10.9,
+          "minutes": 8410,
+          "first": "2025-11-23 23:00",
+          "last": "2025-11-29 19:00",
+          "windows": [
+            [
+              3306,
+              4146
+            ]
+          ]
+        }
+      ]
+    },
+    "tspulse": {
+      "engine": "TS Pulse (ibm-granite/granite-timeseries-tspulse-r1, zero-shot masked reconstruction)",
+      "model_path": "local-models/models\\tspulse\\ibm-granite--granite-timeseries-tspulse-r1\\tspulse-block-ad",
+      "channels": [
+        {
+          "channel": "EGT_spread_C",
+          "max_z": 7.9,
+          "windows": [
+            [
+              3318,
+              3328
+            ],
+            [
+              4145,
+              4160
+            ]
+          ],
+          "first": "2025-11-24 01:00",
+          "last": "2025-11-29 21:20"
+        }
+      ],
+      "scored_channels": [
+        "EGT_spread_C",
+        "comb_dyn_psi",
+        "EGT_avg_C",
+        "load_MW",
+        "fuel_flow_kg_s",
+        "IGV_deg",
+        "vib_DE_mm_s",
+        "vib_NDE_mm_s",
+        "CDP_bar",
+        "CDT_C"
+      ]
+    },
+    "tspulse_status": "ok"
+  },
+  "cross_check": {},
+  "decision": {
+    "analytic": "cold_spot",
+    "cause": "combustion_hardware",
+    "cause_title": "Combustion hardware / fuel nozzle issue",
+    "hypothesis": "True cold sector from the combustor can(s) upstream of TC1, TC2, TC27 (fuel nozzle restriction / combustion hardware)",
+    "primary_action": "borescope",
+    "secondary_actions": [],
+    "urgency": "next_opportunity",
+    "severity": "medium",
+    "escalate": false,
+    "needs_human": false,
+    "review_flags": [],
+    "confidence": 0.9,
+    "confidence_label": "High",
+    "confidence_factors": [
+      [
+        "rule support for 'combustion_hardware' hypothesis = 0.85",
+        0.77
+      ],
+      [
+        "clear margin over the alternative (0.70)",
+        0.05
+      ],
+      [
+        "TS Pulse independently flags the event window",
+        0.05
+      ],
+      [
+        "robust z-score scan flags the event window",
+        0.03
+      ]
+    ],
+    "rules_fired": [
+      "CS-R2",
+      "CS-R3",
+      "CS-R4",
+      "CS-R6",
+      "AN-TSP",
+      "AN-Z"
+    ],
+    "alternatives": [
+      {
+        "cause": "instrumentation",
+        "title": "Thermocouple / harness fault on TC1",
+        "action": "sensor_fix_replace",
+        "score": 0.15,
+        "why_not": "3 TCs are cold together \u2014 one failed TC cannot do that; gradual onset over hours, not a step"
+      }
+    ],
+    "rule_action": "borescope",
+    "feedback_effects": [],
+    "action_label": "Borescope inspection (combustion / hot gas path hardware)"
+  },
+  "similar_cases": [],
+  "knowledge": [
+    {
+      "ref": "process_map_cold_spot.md \u00a7 Typical plant signatures",
+      "text": "- One or a cluster of exhaust thermocouples **TC1\u2013TC27** depressed vs ring mean\n- Rising `EGT_spread_C` (max\u2013min of the TC ring) over hours to days\n- Adjacent TCs often co-cool (sector), not a single random probe\n- Possible mild load / heat-rate degradation\n- Fuel flow may tick up slightly if control compensates\n- Vibration usually secondary unless mechanical insult coexists"
+    },
+    {
+      "ref": "process_map_cold_spot.md \u00a7 Decision flow",
+      "text": "1. **Validate instrumentation**\n   - Flatline, open TC, swapped leads, or recent harness work on the cold zone?\n   - Compare redundant TCs in the same sector if installed\n2. **Characterize the cold sector**\n   - Which zones are cold vs hot? Stable location or rotating?\n   - Onset: gradual (nozzle / staging) vs step (sensor / valve)\n   - Correlation with load, IGV, fuel transfer, ambient\n3. **Combustion / fuel path**\n   - Fuel nozzle restriction or imbalance in that sector\n   - Pilot/main staging, manifold \u0394P, valve positions\n   - Dynamics (`comb_dyn_psi`) \u2014 cold spots can coexist with dynamics\n4. **Performance cross-check**\n   - Power vs expected, CDP/CDT, emissions (CO/NOx) if available\n5. **Action branches**\n   - **Sensor-only** \u2192 TC verification; continue if protection margins OK\n   - **True cold sector / nozzle imbalance** \u2192 site combustion procedure; consider load limit\n   - **Spreading or trip approach** \u2192 treat as HETS precursor; escalate"
+    },
+    {
+      "ref": "process_map_exhaust_spread.md \u00a7 Decision flow",
+      "text": "1. **Confirm data quality**\n   - Any TC reading flatline, open circuit, or stuck?\n   - Recent TC replacement or harness work?\n2. **Characterize the spread**\n   - Peak-to-peak vs historical baseload band\n   - Which circumferential sectors are hot/cold?\n   - Correlation with load, fuel transfer, ambient?\n3. **Cross-check combustion**\n   - Fuel stroke / valve positions\n   - Dynamics (pulsation) sensors if installed\n   - Flame scanners\n4. **Cross-check performance**\n   - Power vs expected\n   - CDP/CDT\n   - Emissions (NOx/CO) if available\n5. **Action branches**\n   - **Sensor-only pattern** \u2192 schedule TC verification, continue monitored operation if protection allows\n   - **True combustion imbalance** \u2192 follow site combustion trouble procedure; consider load reduction\n   - **Hardware risk indicators** (metal temperature, oil, vibration concurrent) \u2192 escalate, prepare outage scope"
+    }
+  ],
+  "review": {
+    "status": "DRAFT",
+    "feedback": null,
+    "history": []
+  },
+  "narrative": {
+    "engine": "granite",
+    "what_happened": "On 2025-11-23 19:50, a cold sector involving TC1, TC2, and TC27 began, with TC1 dropping 22.6\u202f\u00b0C below normal. The sector peaked on 2025-11-24 17:20 with a spread of ~27\u202f\u00b0C. The event lasted 6.0 days, ending on 2025-11-29 19:00 when the sector returned to normal. Fuel flow increased by +0.70\u202f% during the event, while load, vibration, and combustion dynamics remained unchanged.",
+    "why": "The simultaneous cooling of three adjacent thermocouples indicates a real cold gas sector originating from the combustor upstream of TC1, TC2, and TC27, consistent with a progressive fuel-nozzle restriction or combustor hardware issue. The gradual onset over hours, rather than an abrupt step, supports a combustion-related cause. The slight increase in fuel flow (+0.70\u202f%) suggests the control system compensated for reduced heat release, further pointing to a combustion hardware fault. An alternative thermocouple/harness fault was ruled out because a single failed TC cannot affect three adjacent probes, and the gradual onset contradicts a sensor fault.",
+    "action_rationale": "A borescope inspection of the combustion/hot gas path hardware is required to identify fuel-nozzle restriction or other combustor issues. The urgency is set to the next planned outage/shutdown opportunity due to medium severity, with high confidence (0.90).",
+    "site_instructions": [
+      "Verify the readings of TC1, TC2, and TC27 in the controller, and check any redundant TCs if available.",
+      "Use the unit swirl chart to map the cold sector back to the upstream combustor cans.",
+      "Inspect the fuel nozzles, liners, and transition pieces of the identified cans.",
+      "Check fuel-nozzle passages, purge pressures, and manifold pressures for restrictions or coking.",
+      "Monitor the exhaust spread and the sector TCs for recurrence during subsequent operation."
+    ],
+    "concerns": "",
+    "checks": {
+      "json": "valid (schema-constrained)",
+      "action named in rationale": "yes",
+      "numbers traced to evidence": "19/19"
+    },
+    "timings": {
+      "prompt_tokens": 1570,
+      "prompt_s": 64.9,
+      "gen_tokens": 443,
+      "gen_s": 95.9,
+      "load_s": 64.9
+    }
+  },
+  "bottom_line": "Cold sector TC1, TC2, TC27 (3 TCs, adjacent), TC1 22.6 C below normal, gradual onset at 2025-11-23 19:50, 6.0 days, cleared; spread 5.7 -> 26.7 C. Recommended: Borescope inspection \u2014 next planned outage / shutdown opportunity. Confidence 0.90 (High).",
+  "audit": {
+    "thresholds": {
+      "cold_excess_C": 8.0,
+      "min_event_minutes": 60,
+      "sector_member_fraction": 0.3,
+      "step_onset_minutes": 20,
+      "high_depth_C": 25.0,
+      "spread_alarm_C": 40.0,
+      "fuel_comp_fraction": 0.004
+    },
+    "narrative_engine": "Granite 4.1 8B GGUF `granite-4.1-8b-Q4_K_M.gguf` via `llama-completion.exe` (llama.cpp b9947), temp 0, seed 42, JSON-schema constrained, 1570 prompt tokens, 443 generated, 166 s on CPU (8 threads). Narrative only \u2014 action and evidence come from the rules engine.",
+    "settings": {
+      "gguf_path": "local-models/models\\granite-4.1-8b-Q4_K_M.gguf",
+      "gguf_found": true,
+      "llama_binary": "local-models/models\\llama-cpp-bin\\llama-completion.exe",
+      "tspulse_dir": "local-models/models\\tspulse",
+      "data_dir": ".scratch\\valdata3",
+      "use_llm": true,
+      "use_tspulse": true,
+      "llm_threads": 8,
+      "llm_ctx": 4096,
+      "llm_max_tokens": 700
+    },
+    "elapsed_s": 181.5
+  }
+}

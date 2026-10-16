@@ -1,0 +1,60 @@
+{
+  "profile": "combustion_dynamics",
+  "profile_rev": 1,
+  "channels_hash": "5ff78110ff94",
+  "embedder": "stats",
+  "tier": "head",
+  "classes": [
+    "combustion_instability",
+    "dynamics_probe_fault",
+    "normal"
+  ],
+  "frames": [
+    "*",
+    "7EA",
+    "7FA",
+    "7HA",
+    "9HA"
+  ],
+  "n_train": 518,
+  "n_val": 88,
+  "n_heldout": 87,
+  "gate": {
+    "status": "pass",
+    "reasons": [
+      "statistical fallback bundle"
+    ]
+  },
+  "sources": {
+    "original": "dataset",
+    "profile": "dataset_profiles",
+    "original_manifest_sha256": "7ed0fc825d2e7cf3f45f892d9f021a7b047918ad1220e652fb51f2a010524e2c",
+    "profile_manifest_sha256": "bcd6bbf45ec846e7afb551be3ade95e5b2aa1399acb5935f418973d48c32a52c",
+    "roles": {
+      "train": 518,
+      "val": 88,
+      "heldout": 87
+    },
+    "signatures": {
+      "train": {
+        "normal": 98,
+        "combustion_instability": 210,
+        "dynamics_probe_fault": 210
+      },
+      "val": {
+        "normal": 18,
+        "combustion_instability": 35,
+        "dynamics_probe_fault": 35
+      },
+      "heldout": {
+        "combustion_instability": 44,
+        "normal": 23,
+        "dynamics_probe_fault": 20
+      }
+    },
+    "by_source": {
+      "synthetic_original": 423,
+      "synthetic_profile": 270
+    }
+  }
+}

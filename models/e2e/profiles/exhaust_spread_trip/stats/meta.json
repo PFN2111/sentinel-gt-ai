@@ -1,0 +1,60 @@
+{
+  "profile": "exhaust_spread_trip",
+  "profile_rev": 1,
+  "channels_hash": "8269a4224181",
+  "embedder": "stats",
+  "tier": "head",
+  "classes": [
+    "hets_trip_hardware",
+    "normal",
+    "tc_sensor_fault"
+  ],
+  "frames": [
+    "*",
+    "7EA",
+    "7FA",
+    "7HA",
+    "9HA"
+  ],
+  "n_train": 401,
+  "n_val": 67,
+  "n_heldout": 97,
+  "gate": {
+    "status": "pass",
+    "reasons": [
+      "statistical fallback bundle"
+    ]
+  },
+  "sources": {
+    "original": "dataset",
+    "profile": "dataset_profiles",
+    "original_manifest_sha256": "7ed0fc825d2e7cf3f45f892d9f021a7b047918ad1220e652fb51f2a010524e2c",
+    "profile_manifest_sha256": "bcd6bbf45ec846e7afb551be3ade95e5b2aa1399acb5935f418973d48c32a52c",
+    "roles": {
+      "train": 401,
+      "val": 67,
+      "heldout": 97
+    },
+    "signatures": {
+      "train": {
+        "normal": 85,
+        "tc_sensor_fault": 106,
+        "hets_trip_hardware": 210
+      },
+      "val": {
+        "normal": 15,
+        "tc_sensor_fault": 17,
+        "hets_trip_hardware": 35
+      },
+      "heldout": {
+        "tc_sensor_fault": 29,
+        "hets_trip_hardware": 44,
+        "normal": 24
+      }
+    },
+    "by_source": {
+      "synthetic_original": 295,
+      "synthetic_profile": 270
+    }
+  }
+}
